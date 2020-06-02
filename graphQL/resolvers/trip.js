@@ -1,55 +1,128 @@
 const { AuthenticationError, ApolloError } = require('apollo-server');
-const bcrypt = require('bcryptjs');
 
 const checkAuth = require('../../utils/checkAuth');
 const Trip = require('../../models/trip.model');
-const Category = require('../../models/category.model');
 const Expense = require('../../models/expense.model');
+const { createTripValidation, updateTripValidation } = require('../../utils/tripValidations');
 
-const tripResolver = {
+const tripQueries = {
+  getTrip: async (parent, { id }) => {
+    try {
+      let trip = await Trip.findById(id);
+      if (!trip) {
+        throw new ApolloError('Trip does not exists');
+      }
+      return trip
+    } catch (error) {
+      throw new ApolloError(error);
+    }
+  },
+  getTrips: async () => {
+    try {
+      let trips = await Trip.find();
+      return trips
+    } catch (error) {
+      throw new ApolloError(error);
+    }
+  }
+}
+
+const tripChildQueries = {
+  Trip: {
+    expenses: async (parent) => {
+      try {
+        let expenses = await Expense.find({ tripID: parent._id });
+        if (!expenses) throw new ApolloError('No expenses found');
+        return expenses
+      } catch (error) {
+        throw new ApolloError(error)
+      }
+    }
+  }
+}
+
+const tripResolvers = {
   ///////////////////// Create Trip /////////////////////
   createTrip: async (_, { createTrip }, context) => {
-    // check user is authenticated
-    let user = checkAuth(context);
-    // create new trip object
-    let newTrip = {
-      user: user.id,
-      tripName: createTrip.tripName,
-      foreignCurrency: createTrip.foreignCurrency,
-      baseCurrency: createTrip.baseCurrency,
-    }
-    if (createTrip.budget) newTrip.budget = createTrip.budget;
-    if (createTrip.endDate) newTrip.endDate = createTrip.endDate;
-    if (createTrip.photo) newTrip.photo = createTrip.photo;
-    let trip = new Trip(newTrip);
-    let savedTrip = await trip.save();
-    // create food & accommodation categories for the new trip
-    let foodCategory = new Category({ categoryName: "Food", tripID: savedTrip._id });
-    let accommodationCategory = new Category({ categoryName: "Accommodation", tripID: savedTrip._id });
-    await foodCategory.save();
-    await accommodationCategory.save();
-    savedTrip.categories.push(foodCategory._id, accommodationCategory._id);
-    await savedTrip.save();
+    try {
+      // check user is authenticated
+      let user = checkAuth(context);
+      // validate inputs
+      const { error } = createTripValidation.validate(createTrip);
+      // create new trip object
+      let newTrip = {
+        user: user.id,
+        tripName: createTrip.tripName,
+        foreignCurrency: createTrip.foreignCurrency,
+        baseCurrency: createTrip.baseCurrency,
+        categories: ["Food", "Accommodation"]
+      }
+      if (createTrip.budget) newTrip.budget = createTrip.budget;
+      if (createTrip.endDate) newTrip.endDate = createTrip.endDate;
+      if (createTrip.photo) newTrip.photo = createTrip.photo;
+      let trip = new Trip(newTrip);
+      let savedTrip = await trip.save();
 
-    return {
-      ...savedTrip._id,
-      ...savedTrip._doc
+      return {
+        ...savedTrip._id,
+        ...savedTrip._doc
+      }
+    } catch (error) {
+      throw new ApolloError(error);
     }
   },
   ///////////////////// Delete Trip /////////////////////
   deleteTrip: async (_, { tripID }, context) => {
-    // check if user is authenticated
-    let user = checkAuth(context);
-    // get trip
-    let trip = await Trip.findById(tripID);
-    if (!trip) { throw new ApolloError('Trip does not exists'); }
-    // TODO: make sure user.id === trip.user
-    // delete expenses > category > trip 
-    await Expense.deleteMany({ categoryID: [...trip.categories] })
-    await Category.deleteMany({ tripID });
-    await Trip.deleteOne({ _id: tripID });
-    return { message: 'trip has been deleted' }
+    try {
+      // check if user is authenticated
+      let user = checkAuth(context);
+      // get trip
+      let trip = await Trip.findById(tripID);
+      if (!trip) { throw new ApolloError('Trip does not exists'); }
+      // TODO: check user cannot delete trip that is not their own -TEST
+      if (toString(user.id) !== toString(trip.user)) {
+        throw new AuthenticationError('User is not authorized to delete this trip');
+      }
+      // delete expenses > category > trip 
+      await Expense.deleteMany({ tripID });
+      await Trip.deleteOne({ _id: tripID });
+      return { message: 'trip has been deleted' }
+    } catch (error) {
+      throw new ApolloError(error);
+    }
+  },
+  ///////////////////// Update Trip /////////////////////
+  updateTrip: async (_, { updateTrip }, context) => {
+    try {
+      const { tripID, tripName, foreignCurrency, budget, endDate, photo } = updateTrip;
+      // check user auth
+      let user = checkAuth(context);
+      // validate inputs
+      const { error } = updateTripValidation.validate(updateTrip);
+      // find trip
+      let trip = await Trip.findById(tripID);
+      if (!trip) throw new ApolloError('Trip does not exists');
+      // check user.id === trip.user
+      // TODO: check user.id === trip.user -TEST
+      if (toString(user.id) !== toString(trip.user)) {
+        console.log('user.id and trip.user are not equal');
+        // throw new AuthenticationError('User is not authorized to update this trip');
+      }
+      // create update object
+      const updateObj = {};
+      if (tripName) updateObj.tripName = tripName
+      if (foreignCurrency) updateObj.foreignCurrency = foreignCurrency
+      if (budget) updateObj.budget = budget
+      if (endDate) updateObj.endDate = endDate
+      if (photo) updateObj.photo = photo
+      // update trip
+      const updatedTrip = await Trip.findByIdAndUpdate(tripID, { $set: updateObj }, { new: true });
+      //return new trip
+      return updatedTrip;
+    } catch (error) {
+      throw new ApolloError(error);
+    }
   }
 }
 
-module.exports = tripResolver
+module.exports = { tripResolvers, tripQueries, tripChildQueries }

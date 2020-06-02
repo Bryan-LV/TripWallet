@@ -2,17 +2,18 @@ const { gql } = require("apollo-server");
 
 module.exports = gql`
   type User {
-    id: ID!
+    _id: ID!
     username: String!
     name: String!
     email:String!
     baseCurrency: String!
     createdAt:String!
-    trips: [ID]!
     token: String
+    trips: [Trip]
   }
 
   type Trip {
+    _id: ID!
     user: ID!
     tripName: String!
     foreignCurrency: String!
@@ -21,22 +22,18 @@ module.exports = gql`
     budget: String
     endDate: String
     photo: String
-    categories: [ID]
-  }
-
-  type Category {
-    tripID: ID!
-    categoryName: String!
-    expenses: [ID]
+    categories: [String]
+    expenses: [Expense]
   }
 
   type Expense {
-    categoryID: ID!
+    _id: ID!
+    tripID: ID!
+    category: String!,
     expenseName: String!
     foreignPrice: Float!
     baseCurrencyPrice: Float!
     createdAt: String!
-    category: ID!
     spread: Int
     endDate: String
     notes: String
@@ -49,6 +46,8 @@ module.exports = gql`
   type Query {
     user(id: ID!): User
     users: [User]
+    getTrip(id:ID!):Trip
+    getTrips: [Trip]
   }
 
   type Mutation {
@@ -57,7 +56,11 @@ module.exports = gql`
     deleteUser(id:ID!): Response
     updateUser(updateUser: UpdateInput): User
     createTrip(createTrip: CreateTrip): Trip
+    updateTrip(updateTrip:UpdateTrip): Trip
     deleteTrip(tripID:ID!): Response
+    createExpense(NewExpense: NewExpense): Expense
+    updateExpense(UpdateExpense: UpdateExpense): Expense
+    deleteExpense(expenseID: ID!): Response
   }
 
   input RegisterInput {
@@ -92,6 +95,37 @@ module.exports = gql`
     budget: String
     endDate: String
     photo: String
+  }
+
+  input UpdateTrip {
+    tripID: ID!
+    tripName: String
+    foreignCurrency: String
+    budget: String
+    endDate: String
+    photo: String
+  }
+
+  input NewExpense {
+    tripID: ID!
+    category: String
+    expenseName: String
+    foreignPrice: Int
+    baseCurrencyPrice: Int
+    spread: Int
+    endDate: String
+    notes: String
+  }
+
+  input UpdateExpense {
+    tripID: ID!
+    category: String
+    expenseName: String
+    foreignPrice: Int
+    baseCurrencyPrice: Int
+    spread: Int
+    endDate: String
+    notes: String
   }
 
 `

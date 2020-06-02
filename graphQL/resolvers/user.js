@@ -3,9 +3,17 @@ const bcrypt = require('bcryptjs');
 require('dotenv').config();
 
 const User = require('../../models/user.model');
+const Trip = require('../../models/trip.model');
+const Expense = require('../../models/expense.model');
 const RegisterValidation = require('../../utils/registerValidation');
 const LoginValidation = require('../../utils/loginValidation');
 const generateToken = require('../../utils/generateToken');
+const checkAuth = require('../../utils/checkAuth');
+
+const userQueries = {
+  user: (_, { id }) => User.findById(id),
+  users: () => User.find({})
+}
 
 const userResolvers = {
   ///////////////////// Register User /////////////////////
@@ -74,6 +82,8 @@ const userResolvers = {
   ,
   ///////////////////// Update User /////////////////////
   updateUser: async (_, { updateUser }) => {
+    // check if user is authenticated
+    let user = checkAuth(context);
     try {
       // TODO: update user logic
       return User.findOne({ email: updateUser.email });
@@ -82,12 +92,17 @@ const userResolvers = {
     }
   },
   ///////////////////// Delete User /////////////////////
-  deleteUser: async (_, { id }) => {
+  deleteUser: async (_, { id }, context) => {
     try {
-      let user = await User.findByIdAndDelete(id);
-      if (!user) {
-        throw new ApolloError('User does not exist');
-      }
+      // check if user is authenticated
+      let user = checkAuth(context);
+      user = await User.findById(id);
+      if (!user) throw new ApolloError('User does not exist');
+      // delete expenses > trip > user
+      let trip = await Trip.findOne({ user: user.id });
+      await Expense.deleteMany({ tripID: trip._id });
+      await trip.remove()
+      await user.remove()
       return { message: 'User has been successfully deleted' }
     } catch (error) {
       throw new ApolloError(error)
@@ -95,4 +110,4 @@ const userResolvers = {
   }
 }
 
-module.exports = userResolvers
+module.exports = { userResolvers, userQueries }

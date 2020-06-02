@@ -1,21 +1,20 @@
-const { ApolloError, UserInputError, AuthenticationError } = require('apollo-server');
-const bcrypt = require('bcryptjs');
-require('dotenv').config();
-
-const User = require('../models/user.model');
-const generateToken = require('../utils/generateToken');
-const userResolvers = require('./resolvers/user');
-const tripResolvers = require('./resolvers/trip');
+const { userResolvers, userQueries } = require('./resolvers/user');
+const { tripResolvers, tripQueries, tripChildQueries } = require('./resolvers/trip');
+const { expenseQueries, expenseResolvers } = require('./resolvers/expenses');
 
 const resolvers = {
   Query: {
-    user: (_, { id }) => User.findById(id),
-    users: () => User.find({})
+    ...userQueries,
+    ...tripQueries,
+    ...expenseQueries
   },
+
+  ...tripChildQueries,
 
   Mutation: {
     ...userResolvers,
-    ...tripResolvers
+    ...tripResolvers,
+    ...expenseResolvers
   }
 }
 

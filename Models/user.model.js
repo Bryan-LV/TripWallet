@@ -7,7 +7,6 @@ const userSchema = new Schema({
   email: String,
   password: String,
   baseCurrency: String,
-  trips: [{ type: Schema.Types.ObjectId, ref: 'trip' }]
 }, {
   timestamps: true
 })

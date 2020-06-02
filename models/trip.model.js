@@ -9,7 +9,7 @@ const tripSchema = new Schema({
   budget: String,
   endDate: Date,
   photo: String,
-  categories: [{ type: Schema.Types.ObjectId, ref: 'category' }]
+  categories: [String]
 }, {
   timestamps: true
 })
