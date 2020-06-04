@@ -41,6 +41,7 @@ module.exports = gql`
 
   type Response {
     message: String!
+    isValid: Boolean
   }
 
   type Query {
@@ -48,6 +49,7 @@ module.exports = gql`
     users: [User]
     getTrip(id:ID!):Trip
     getTrips: [Trip]
+    checkAuth: Response!
   }
 
   type Mutation {
@@ -73,8 +75,7 @@ module.exports = gql`
   }
 
   input LoginInput {
-    username: String
-    email: String
+    email: String!
     password: String!
   }
 

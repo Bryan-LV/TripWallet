@@ -11,8 +11,27 @@ const generateToken = require('../../utils/generateToken');
 const checkAuth = require('../../utils/checkAuth');
 
 const userQueries = {
-  user: (_, { id }) => User.findById(id),
-  users: () => User.find({})
+  user: (_, { id }) => {
+    try {
+      let user = User.findById(id)
+      if (!user) {
+        throw new ApolloError('This user does not exist');
+      }
+      return user;
+    } catch (error) {
+      throw new ApolloError(error);
+    }
+  },
+  // TODO: delete query in production
+  users: () => User.find({}),
+  checkAuth: (_, args, context) => {
+    try {
+      checkAuth(context)
+      return { isValid: true }
+    } catch (error) {
+      throw new AuthenticationError('User is not authenticated');
+    }
+  }
 }
 
 const userResolvers = {
@@ -48,17 +67,12 @@ const userResolvers = {
   },
   ///////////////////// Login User /////////////////////
   login: async (_, { loginUser }) => {
-    let user;
     try {
       // validate user inputs
       const { error } = LoginValidation.validate(loginUser);
+      if (error) throw new UserInputError(error);
       // check if user exists
-      if (loginUser.username) {
-        user = await User.findOne({ username: loginUser.username });
-      }
-      if (loginUser.email) {
-        user = await User.findOne({ email: loginUser.email });
-      }
+      let user = await User.findOne({ email: loginUser.email });
       if (!user) {
         throw new UserInputError('User does not have an account');
       }
@@ -76,7 +90,8 @@ const userResolvers = {
         token
       }
     } catch (error) {
-
+      console.log(error);
+      throw new ApolloError(error)
     }
   }
   ,
@@ -88,6 +103,7 @@ const userResolvers = {
       // TODO: update user logic
       return User.findOne({ email: updateUser.email });
     } catch (error) {
+      console.log(error);
       throw new ApolloError(error)
     }
   },
