@@ -1,8 +1,7 @@
 import React, { createContext, useReducer } from 'react'
-import { useLazyQuery } from '@apollo/client'
 
 import authReducer from './authReducer'
-import { LOGIN_USER, LOGOUT, REGISTER_USER, PERSIST_USER } from './authTypes'
+import { LOGIN_USER, LOGOUT, PERSIST_USER } from './authTypes'
 import setToken from '../../utils/setToken'
 
 export const AuthContext = createContext();
@@ -12,15 +11,19 @@ function AuthContextProvider(props) {
 
   const authOperations = {
     login: (userData) => {
+      console.log('login');
       // set token
       setToken(userData);
+      localStorage.setItem('baseCurrency', userData.baseCurrency);
       // set user to context
-      dispatch({ type: LOGIN_USER, payload: { _id: userData._id, username: userData.username } })
+      dispatch({ type: LOGIN_USER, payload: { _id: userData._id, username: userData.username, baseCurrency: userData.baseCurrency } })
     },
     logout: () => {
+      console.log('log out');
       dispatch({ type: LOGOUT });
     },
     persistUser: async () => {
+      console.log('persist user');
       dispatch({ type: PERSIST_USER });
     }
   }

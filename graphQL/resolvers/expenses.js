@@ -35,7 +35,7 @@ const expenseResolvers = {
       // check user cannot update expense that is not their own
       // check expense's tripID > trip.user === user.id who is deleting expense
       let trip = await Trip.findById(expense.tripID);
-      if (toString(user.id) !== toString(trip.user)) {
+      if (toString(user._id) !== toString(trip.user)) {
         console.log('User is not authorized to update expense');
         throw new ApolloError('User is not authorized to update this expense')
       }
@@ -46,6 +46,7 @@ const expenseResolvers = {
       if (foreignPrice) updateObj.foreignPrice = foreignPrice
       if (baseCurrencyPrice) updateObj.baseCurrencyPrice = baseCurrencyPrice
       if (spread) updateObj.spread = spread
+      if (startDate) updateObj.startDate = startDate
       if (endDate) updateObj.endDate = endDate
       if (notes) updateObj.notes = notes
       // update trip
@@ -67,7 +68,7 @@ const expenseResolvers = {
       // check user cannot delete expense that is not their own
       // check expense's tripID > trip.user === user.id who is deleting expense
       let trip = await Trip.findById(expense.tripID);
-      if (toString(user.id) !== toString(trip.user)) {
+      if (toString(user._id) !== toString(trip.user)) {
         console.log('User is not authorized to delete expense');
         throw new ApolloError('User is not authorized to delete this expense')
       }

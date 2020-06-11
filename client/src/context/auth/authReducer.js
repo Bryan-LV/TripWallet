@@ -5,10 +5,11 @@ const authReducer = (state, action) => {
   switch (action.type) {
     case LOGIN_USER:
     case REGISTER_USER:
+      // payload : {_id: [ID], username: [username]}
       return { user: action.payload };
       break;
     case LOGOUT:
-      localStorage.removeItem('token');
+      localStorage.clear()
       return { user: null };
     case PERSIST_USER:
       let token = JSON.parse(localStorage.getItem('token'));

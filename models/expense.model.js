@@ -8,10 +8,9 @@ const expenseSchema = new Schema({
   foreignPrice: Number,
   baseCurrencyPrice: Number,
   spread: Number,
+  startDate: Date,
   endDate: Date,
   notes: String
-}, {
-  timestamps: true
 })
 
 const Expense = mongoose.model('Expense', expenseSchema);

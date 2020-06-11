@@ -18,8 +18,8 @@ module.exports = gql`
     tripName: String!
     foreignCurrency: String!
     baseCurrency: String!
-    createdAt: String!
-    budget: String
+    budget: Int
+    startDate: String!
     endDate: String
     photo: String
     categories: [String]
@@ -33,8 +33,8 @@ module.exports = gql`
     expenseName: String!
     foreignPrice: Float!
     baseCurrencyPrice: Float!
-    createdAt: String!
     spread: Int
+    startDate: String
     endDate: String
     notes: String
   }
@@ -49,6 +49,8 @@ module.exports = gql`
     users: [User]
     getTrip(id:ID!):Trip
     getTrips: [Trip]
+    ######### Delete getalltrips in production ###############
+    getAllTrips: [Trip]
     checkAuth: Response!
   }
 
@@ -93,7 +95,8 @@ module.exports = gql`
     tripName: String!
     foreignCurrency: String!
     baseCurrency: String!
-    budget: String
+    budget: Int
+    startDate: String
     endDate: String
     photo: String
   }
@@ -102,7 +105,8 @@ module.exports = gql`
     tripID: ID!
     tripName: String
     foreignCurrency: String
-    budget: String
+    budget: Int
+    startDate:String
     endDate: String
     photo: String
   }
@@ -114,6 +118,7 @@ module.exports = gql`
     foreignPrice: Int
     baseCurrencyPrice: Int
     spread: Int
+    startDate:String
     endDate: String
     notes: String
   }
@@ -125,6 +130,7 @@ module.exports = gql`
     foreignPrice: Int
     baseCurrencyPrice: Int
     spread: Int
+    startDate: String
     endDate: String
     notes: String
   }

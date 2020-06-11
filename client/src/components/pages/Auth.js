@@ -1,9 +1,9 @@
-import React, { useReducer } from 'react'
-import { useMutation } from '@apollo/client'
+import React, { useReducer, useEffect } from 'react'
+import { useMutation, useQuery } from '@apollo/client'
 import { useHistory } from 'react-router-dom'
 
 import { loginSchemaValidation, registerSchemaValidation } from '../../utils/authFormValidation'
-import { LOGIN_USER } from '../../queries/user'
+import { LOGIN_USER, REGISTER_USER } from '../../queries/user'
 
 const userInputReducer = (state = userAuthState, action) => {
   switch (action.type) {
@@ -48,16 +48,32 @@ function Auth({ auth, user }) {
       auth.login(data.login);
     },
     onError: (error) => {
+      // TODO: Handle Error ( alert context maybe?)
+      console.log(error.message);
+      console.log(error);
+    }
+  })
+
+  const [queryRegister] = useMutation(REGISTER_USER, {
+    onCompleted: async (data) => {
+      auth.login(data.register);
+    },
+    onError: (error) => {
+      // TODO: Handle Error ( alert context maybe?)
       console.log(error.message);
     }
   })
   const history = useHistory()
 
-  if (user !== null) {
-    history.push('/');
-  }
+  useEffect(() => {
+    if (user !== null) {
+      history.push('/');
+    }
+
+  }, [user])
 
   const handleLogin = async (e) => {
+    console.log('handle login submit');
     e.preventDefault();
     try {
       // validate inputs
@@ -65,6 +81,7 @@ function Auth({ auth, user }) {
       // query user ? set user context & set token : show error
       await queryLogin({ variables: authState.login });
     } catch (error) {
+      // FIXME: Handle Error ( alert context maybe?)
       if (error.name === 'ValidationError') {
         console.log('validation error');
         error.errors.map(err => console.log(err));
@@ -79,17 +96,16 @@ function Auth({ auth, user }) {
     try {
       // validate inputs
       await registerSchemaValidation.validate(authState.register, { abortEarly: false });
-      // query user
-      // if no errors, show user dashboard
+      // query user ? set user context & set token : show error
+      await queryRegister({ variables: authState.register });
     } catch (error) {
+      // FIXME: Handle Error ( alert context maybe?)
       if (error.name === 'ValidationError') {
         console.log('validation error');
         error.errors.map(err => console.log(err));
       } else {
         console.log(error);
       }
-      // query user
-      // if no errors, show user dashboard
     }
   }
 

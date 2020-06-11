@@ -17,7 +17,20 @@ const tripQueries = {
       throw new ApolloError(error);
     }
   },
-  getTrips: async () => {
+  getTrips: async (parent, args, context) => {
+    try {
+      let user = checkAuth(context);
+      let trips = await Trip.find({ user: user._id });
+      if (!trips) {
+        throw new ApolloError('Could not find users trips');
+      }
+      return trips
+    } catch (error) {
+      throw new ApolloError(error);
+    }
+  },
+  // TODO: DELETE IN PRODUCTION
+  getAllTrips: async () => {
     try {
       let trips = await Trip.find();
       return trips
@@ -51,11 +64,12 @@ const tripResolvers = {
       const { error } = createTripValidation.validate(createTrip);
       // create new trip object
       let newTrip = {
-        user: user.id,
+        user: user._id,
         tripName: createTrip.tripName,
         foreignCurrency: createTrip.foreignCurrency,
         baseCurrency: createTrip.baseCurrency,
-        categories: ["Food", "Accommodation"]
+        categories: ["Food", "Accommodation"],
+        startDate: createTrip.startDate
       }
       if (createTrip.budget) newTrip.budget = createTrip.budget;
       if (createTrip.endDate) newTrip.endDate = createTrip.endDate;
@@ -80,7 +94,7 @@ const tripResolvers = {
       let trip = await Trip.findById(tripID);
       if (!trip) { throw new ApolloError('Trip does not exists'); }
       // TODO: check user cannot delete trip that is not their own -TEST
-      if (toString(user.id) !== toString(trip.user)) {
+      if (toString(user._id) !== toString(trip.user)) {
         throw new AuthenticationError('User is not authorized to delete this trip');
       }
       // delete expenses > category > trip 
@@ -94,7 +108,7 @@ const tripResolvers = {
   ///////////////////// Update Trip /////////////////////
   updateTrip: async (_, { updateTrip }, context) => {
     try {
-      const { tripID, tripName, foreignCurrency, budget, endDate, photo } = updateTrip;
+      const { tripID, tripName, foreignCurrency, budget, startDate, endDate, photo } = updateTrip;
       // check user auth
       let user = checkAuth(context);
       // validate inputs
@@ -104,7 +118,7 @@ const tripResolvers = {
       if (!trip) throw new ApolloError('Trip does not exists');
       // check user.id === trip.user
       // TODO: check user.id === trip.user -TEST
-      if (toString(user.id) !== toString(trip.user)) {
+      if (toString(user._id) !== toString(trip.user)) {
         console.log('user.id and trip.user are not equal');
         // throw new AuthenticationError('User is not authorized to update this trip');
       }
@@ -113,6 +127,7 @@ const tripResolvers = {
       if (tripName) updateObj.tripName = tripName
       if (foreignCurrency) updateObj.foreignCurrency = foreignCurrency
       if (budget) updateObj.budget = budget
+      if (startDate) updateObj.startDate = startDate
       if (endDate) updateObj.endDate = endDate
       if (photo) updateObj.photo = photo
       // update trip

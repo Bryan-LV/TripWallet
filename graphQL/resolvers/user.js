@@ -26,8 +26,10 @@ const userQueries = {
   users: () => User.find({}),
   checkAuth: (_, args, context) => {
     try {
-      checkAuth(context)
-      return { isValid: true }
+      const isValid = checkAuth(context)
+      if (isValid) {
+        return { isValid: true }
+      }
     } catch (error) {
       throw new AuthenticationError('User is not authenticated');
     }
@@ -55,7 +57,7 @@ const userResolvers = {
       // generate token
       const token = generateToken(savedUser);
       return {
-        id: savedUser._id,
+        _id: savedUser._id,
         ...savedUser._doc,
         token,
         trips: []
@@ -85,8 +87,8 @@ const userResolvers = {
       // generate token
       const token = await generateToken(user);
       return {
+        _id: user._id,
         ...user._doc,
-        id: user._id,
         token
       }
     } catch (error) {
@@ -100,7 +102,7 @@ const userResolvers = {
     // check if user is authenticated
     let user = checkAuth(context);
     try {
-      // TODO: update user logic
+      // TODO: Add update user logic
       return User.findOne({ email: updateUser.email });
     } catch (error) {
       console.log(error);
@@ -115,7 +117,7 @@ const userResolvers = {
       user = await User.findById(id);
       if (!user) throw new ApolloError('User does not exist');
       // delete expenses > trip > user
-      let trip = await Trip.findOne({ user: user.id });
+      let trip = await Trip.findOne({ user: user._id });
       await Expense.deleteMany({ tripID: trip._id });
       await trip.remove()
       await user.remove()

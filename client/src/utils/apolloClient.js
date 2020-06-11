@@ -11,6 +11,7 @@ const setAuthorizationLink = setContext(() => ({
 const client = new ApolloClient({
   cache: new InMemoryCache(),
   link: setAuthorizationLink.concat(new HttpLink({
+    // FIXME: Dynamic uri
     uri: 'http://localhost:4000/graphql'
   }))
 });

@@ -6,12 +6,11 @@ const tripSchema = new Schema({
   tripName: String,
   foreignCurrency: String,
   baseCurrency: String,
-  budget: String,
+  budget: Number,
+  startDate: { type: Date, default: new Date() },
   endDate: Date,
   photo: String,
   categories: [String]
-}, {
-  timestamps: true
 })
 
 const Trip = mongoose.model('Trip', tripSchema);

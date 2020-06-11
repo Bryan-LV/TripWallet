@@ -1,0 +1,2 @@
+const currencies = ["EUR", "USD", "AUD", "BGN", "BRL", "NOK", "CAD", "CHF", "NZD", "CNY", "CZK", "DKK", "GBP", "HKD", "HRK", "HUF", "IDR", "ILS", "INR", "ISK", "JPY", "KRW", "MXN", "MYR", "PHP", "PLN", "RON", "RUB", "SEK", "SGD", "THB", "TRY", "ZAR"];
+export default currencies

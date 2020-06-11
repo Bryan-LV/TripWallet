@@ -5,7 +5,8 @@ const createTripValidation = Joi.object({
   tripName: Joi.string().min(3),
   foreignCurrency: Joi.string().min(3).max(3),
   baseCurrency: Joi.string().min(3).max(3),
-  budget: Joi.string(),
+  budget: Joi.number(),
+  startDate: Joi.string(),
   endDate: Joi.string(),
   photo: Joi.string()
 })
@@ -15,7 +16,8 @@ const updateTripValidation = Joi.object({
   tripID: Joi.string(),
   tripName: Joi.string().min(3),
   foreignCurrency: Joi.string().min(3).max(3),
-  budget: Joi.string(),
+  budget: Joi.number(),
+  startDate: Joi.string(),
   endDate: Joi.string(),
   photo: Joi.string()
 })
