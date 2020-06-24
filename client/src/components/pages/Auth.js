@@ -1,48 +1,13 @@
-import React, { useReducer, useEffect } from 'react'
-import { useMutation, useQuery } from '@apollo/client'
-import { useHistory } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { useMutation } from '@apollo/client'
+import { useHistory, Link, Route } from 'react-router-dom'
+import { Formik, Form, Field, ErrorMessage } from 'formik'
 
 import { loginSchemaValidation, registerSchemaValidation } from '../../utils/authFormValidation'
 import { LOGIN_USER, REGISTER_USER } from '../../queries/user'
+import currencyCodes from '../../utils/currencyCodes'
 
-const userInputReducer = (state = userAuthState, action) => {
-  switch (action.type) {
-    case 'login':
-    case 'register':
-      return ({
-        ...state, [action.type]: {
-          ...state[action.type],
-          [action.input]: action.payload
-        }
-      })
-      break;
-    case 'changeForm':
-      return { ...state, userActionType: action.payload }
-    default:
-      return state
-      break;
-  }
-}
-
-const userAuthState = {
-  login: {
-    email: '',
-    password: ''
-  },
-  register: {
-    name: '',
-    username: '',
-    email: '',
-    baseCurrency: '',
-    password: '',
-    confirmPassword: ''
-  },
-  error: null,
-  userActionType: 'login'
-}
-
-function Auth({ auth, user }) {
-  const [authState, authDispatch] = useReducer(userInputReducer, userAuthState);
+const Login = ({ auth, url }) => {
   const [queryLogin] = useMutation(LOGIN_USER, {
     onCompleted: async (data) => {
       auth.login(data.login);
@@ -54,32 +19,10 @@ function Auth({ auth, user }) {
     }
   })
 
-  const [queryRegister] = useMutation(REGISTER_USER, {
-    onCompleted: async (data) => {
-      auth.login(data.register);
-    },
-    onError: (error) => {
-      // TODO: Handle Error ( alert context maybe?)
-      console.log(error.message);
-    }
-  })
-  const history = useHistory()
-
-  useEffect(() => {
-    if (user !== null) {
-      history.push('/');
-    }
-
-  }, [user])
-
-  const handleLogin = async (e) => {
-    console.log('handle login submit');
-    e.preventDefault();
+  const handleLogin = async (values) => {
     try {
-      // validate inputs
-      await loginSchemaValidation.validate(authState.login, { abortEarly: false });
       // query user ? set user context & set token : show error
-      await queryLogin({ variables: authState.login });
+      await queryLogin({ variables: values });
     } catch (error) {
       // FIXME: Handle Error ( alert context maybe?)
       if (error.name === 'ValidationError') {
@@ -91,13 +34,48 @@ function Auth({ auth, user }) {
     }
   }
 
-  const handleRegister = async (e) => {
-    e.preventDefault();
+  return (
+    <Formik
+      initialValues={{ email: '', password: '' }}
+      validationSchema={loginSchemaValidation}
+      onSubmit={handleLogin}
+    >
+      <Form>
+        <div className="flex items-center border-b border-b-2 border-gray-900 py-2 mx-10">
+          <Field type="text" placeholder="email" name="email" className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" />
+        </div>
+        <ErrorMessage name="email">{(errorMsg) => <p className="mx-10">{errorMsg}</p>}</ErrorMessage>
+
+        <div className="flex items-center border-b border-b-2 border-gray-900 py-2 mx-10">
+          <Field type="text" placeholder="password" name="password" className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" />
+        </div>
+        <ErrorMessage name="password">{(errorMsg) => <p className="mx-10">{errorMsg}</p>}</ErrorMessage>
+
+        <Link to="/register" className="inline-block mx-10 my-5 p-4 bg-green-400">Create an account</Link>
+        <div className="text-center mt-4">
+          <button type="submit" className="py-3 px-6 text-lg font-medium bg-teal-400 w-3/4 md:w-1/2">Login</button>
+        </div>
+      </Form>
+    </Formik>
+  )
+}
+
+const Register = ({ auth }) => {
+  const [queryRegister] = useMutation(REGISTER_USER, {
+    onCompleted: async (data) => {
+      auth.login(data.register);
+    },
+    onError: (error) => {
+      // TODO: Handle Error ( alert context maybe?)
+      console.log(error.message);
+    }
+  })
+
+  const handleRegister = async (values) => {
+
     try {
-      // validate inputs
-      await registerSchemaValidation.validate(authState.register, { abortEarly: false });
       // query user ? set user context & set token : show error
-      await queryRegister({ variables: authState.register });
+      await queryRegister({ variables: values });
     } catch (error) {
       // FIXME: Handle Error ( alert context maybe?)
       if (error.name === 'ValidationError') {
@@ -109,33 +87,70 @@ function Auth({ auth, user }) {
     }
   }
 
-  const changeForm = (formType) => authDispatch({ type: 'changeForm', payload: formType })
+  return (
+    <Formik
+      initialValues={{
+        name: '',
+        username: '',
+        email: '',
+        baseCurrency: '',
+        password: '',
+        confirmPassword: ''
+      }}
+      validationSchema={registerSchemaValidation}
+      onSubmit={handleRegister}>
 
-  const Login = (
-    <form onSubmit={handleLogin}>
-      <input type="text" placeholder="email" value={authState.login.email} onChange={(e) => authDispatch({ type: 'login', input: 'email', payload: e.target.value })} />
-      <input type="text" placeholder="password" value={authState.login.password} onChange={(e) => authDispatch({ type: 'login', input: 'password', payload: e.target.value })} />
-      <p onClick={(e) => changeForm('register')}>Create an account</p>
-      <button type="submit">Login</button>
-    </form>
-  )
+      <Form onSubmit={handleRegister}>
+        <div className="flex items-center border-b border-b-2 border-gray-900 py-2 mx-10">
+          <Field type="text" name="name" placeholder="Name" className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" />
+        </div>
+        <div className="flex items-center border-b border-b-2 border-gray-900 py-2 mx-10">
+          <Field type="text" name="username" placeholder="Username" className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" />
+        </div>
+        <div className="flex items-center border-b border-b-2 border-gray-900 py-2 mx-10">
+          <Field type="text" name="email" placeholder="email" className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" />
+        </div>
+        <div className="flex items-center border-b border-b-2 border-gray-900 py-2 mx-10">
+          <Field type="text" name="photo" placeholder="Photo" className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" />
+        </div>
+        <div className="flex items-center border-b border-b-2 border-gray-900 py-2 mx-10 mb-8">
+          <Field name="baseCurrency" as="select" placeholder="Select Currency" placeholder="base currency" className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none">
+            {currencyCodes.map(currencyCode => <option key={currencyCode} value={currencyCode}>{currencyCode}</option>)}
+          </Field>
+        </div>
+        <div className="flex items-center border-b border-b-2 border-gray-900 py-2 mx-10">
+          <Field type="text" name="password" placeholder="password" className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" />
+        </div>
+        <div className="flex items-center border-b border-b-2 border-gray-900 py-2 mx-10">
+          <Field type="text" name="confirmPassword" placeholder="confirmPassword" className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" />
+        </div>
 
-  const Register = (
-    <form onSubmit={handleRegister}>
-      <input type="text" placeholder="name" value={authState.register.name} onChange={(e) => authDispatch({ type: 'register', input: 'name', payload: e.target.value })} />
-      <input type="text" placeholder="username" value={authState.register.username} onChange={(e) => authDispatch({ type: 'register', input: 'username', payload: e.target.value })} />
-      <input type="text" placeholder="email" value={authState.register.email} onChange={(e) => authDispatch({ type: 'register', input: 'email', payload: e.target.value })} />
-      <input type="text" placeholder="base currency" value={authState.register.baseCurrency} onChange={(e) => authDispatch({ type: 'register', input: 'baseCurrency', payload: e.target.value })} />
-      <input type="text" placeholder="password" value={authState.register.password} onChange={(e) => authDispatch({ type: 'register', input: 'password', payload: e.target.value })} />
-      <input type="text" placeholder="confirm password" value={authState.register.confirmPassword} onChange={(e) => authDispatch({ type: 'register', input: 'confirmPassword', payload: e.target.value })} />
-      <p onClick={(e) => changeForm('login')}>Login to your account</p>
-      <button type="submit">Register</button>
-    </form>
+        <Link to="/login" className="inline-block mx-10 my-5 p-4 bg-green-400"> Login to your account</Link>
+        <div className="text-center mt-4">
+          <button type="submit" className="py-3 px-6 text-lg font-medium bg-teal-400 w-3/4 md:w-1/2">Register</button>
+        </div>
+      </Form >
+    </Formik>
   )
+}
+
+function Auth({ auth, user }) {
+  const history = useHistory()
+  useEffect(() => {
+    if (user !== null) {
+      history.push('/');
+    }
+
+  }, [user])
 
   return (
     <div>
-      {authState.userActionType === 'login' ? Login : Register}
+      <Route exact path="/login">
+        <Login auth={auth} />
+      </Route>
+      <Route path="/register">
+        <Register auth={auth} />
+      </Route>
     </div>
   )
 }

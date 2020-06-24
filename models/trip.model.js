@@ -7,8 +7,9 @@ const tripSchema = new Schema({
   foreignCurrency: String,
   baseCurrency: String,
   budget: Number,
-  startDate: { type: Date, default: new Date() },
-  endDate: Date,
+  totalSpent: Number,
+  startDate: String,
+  endDate: String,
   photo: String,
   categories: [String]
 })

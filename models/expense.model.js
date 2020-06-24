@@ -8,8 +8,8 @@ const expenseSchema = new Schema({
   foreignPrice: Number,
   baseCurrencyPrice: Number,
   spread: Number,
-  startDate: Date,
-  endDate: Date,
+  startDate: String,
+  endDate: String,
   notes: String
 })
 

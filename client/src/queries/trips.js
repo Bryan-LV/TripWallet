@@ -6,8 +6,10 @@ const FETCH_TRIPS = gql`
       _id
       tripName
       startDate
+      endDate
       foreignCurrency
       baseCurrency
+      totalSpent
     }
   }
 `
@@ -27,6 +29,15 @@ const FETCH_TRIP = gql`
       
       expenses{
         _id
+        tripID
+        category 
+        expenseName 
+        foreignPrice 
+        baseCurrencyPrice 
+        spread 
+        startDate
+        endDate
+        notes
       }
     }
   }

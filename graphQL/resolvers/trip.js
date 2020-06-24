@@ -69,7 +69,8 @@ const tripResolvers = {
         foreignCurrency: createTrip.foreignCurrency,
         baseCurrency: createTrip.baseCurrency,
         categories: ["Food", "Accommodation"],
-        startDate: createTrip.startDate
+        startDate: createTrip.startDate,
+        totalSpent: 0.00
       }
       if (createTrip.budget) newTrip.budget = createTrip.budget;
       if (createTrip.endDate) newTrip.endDate = createTrip.endDate;

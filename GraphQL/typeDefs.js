@@ -19,6 +19,7 @@ module.exports = gql`
     foreignCurrency: String!
     baseCurrency: String!
     budget: Int
+    totalSpent: Float
     startDate: String!
     endDate: String
     photo: String
@@ -62,7 +63,7 @@ module.exports = gql`
     createTrip(createTrip: CreateTrip): Trip
     updateTrip(updateTrip:UpdateTrip): Trip
     deleteTrip(tripID:ID!): Response
-    createExpense(NewExpense: NewExpense): Expense
+    createExpense(newExpense: NewExpense): Expense
     updateExpense(UpdateExpense: UpdateExpense): Expense
     deleteExpense(expenseID: ID!): Response
   }
@@ -115,8 +116,8 @@ module.exports = gql`
     tripID: ID!
     category: String
     expenseName: String
-    foreignPrice: Int
-    baseCurrencyPrice: Int
+    foreignPrice: Float
+    baseCurrencyPrice: Float
     spread: Int
     startDate:String
     endDate: String

@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import './styles/base.css'
 import { BrowserRouter } from 'react-router-dom'
 import { ApolloProvider } from '@apollo/client'
 import AuthContextProvider from './context/auth/AuthContext'

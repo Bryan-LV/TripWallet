@@ -1,21 +1,20 @@
 import React, { useEffect } from 'react'
-import { useHistory, Route, Link } from 'react-router-dom'
+import { useHistory, Link } from 'react-router-dom'
 import Trips from '../containers/Trips';
 
-function Dashboard({ user, setTrip, auth, setEditForm }) {
+function Dashboard({ user, setTrip, auth, setTripEdit }) {
   const history = useHistory();
   useEffect(() => {
     if (!user) {
-      history.push('/signin');
+      history.push('/login');
     }
   }, [user])
 
   return (
-    <div>
-      <h4>Dashboard</h4>
+    <div className="bg-gray">
       <Trips setTrip={setTrip} />
-      <Link to="/tripform" onClick={() => setEditForm({ isEdit: false, formDetails: null })}>Add trip</Link>
-      <button onClick={auth.logout}>Logout</button>
+      <Link to="/tripform" onClick={() => setTripEdit({ isEdit: false, formDetails: null })} className="inline-block mx-10 my-5 p-4 bg-green-400">Add trip</Link>
+      <button onClick={auth.logout} className="inline-block mx-10 my-5 p-4 bg-red-400">Logout</button>
     </div>
   )
 }

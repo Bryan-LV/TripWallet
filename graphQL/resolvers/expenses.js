@@ -1,8 +1,10 @@
 const { AuthenticationError, ApolloError } = require('apollo-server');
+const currencyjs = require('currency.js');
 
 const checkAuth = require('../../utils/checkAuth');
 const Trip = require('../../models/trip.model');
 const Expense = require('../../models/expense.model');
+const { findById } = require('../../models/trip.model');
 
 const expenseQueries = {
   ///////////////////// Get Expense /////////////////////
@@ -10,15 +12,28 @@ const expenseQueries = {
 
 const expenseResolvers = {
   ///////////////////// Create Expense /////////////////////
-  createExpense: async (_, { NewExpense }, context) => {
+  createExpense: async (_, { newExpense }, context) => {
     try {
       // check user is authenticated
       let user = checkAuth(context);
       // create expense
-      let expense = new Expense(NewExpense);
-      await expense.save()
+      let expense = new Expense(newExpense);
+      // check if new category was added
+      let trip = await Trip.findById(newExpense.tripID);
+      if (!trip) throw new ApolloError('Trip of new expense cannot be found');
+      const checkCategories = trip.categories.filter(cat => cat.toLowerCase() === newExpense.category.toLowerCase());
+      if (checkCategories.length === 0) {
+        trip.categories.push(newExpense.category);
+      }
+      // update total spent
+      const updatedTotal = currencyjs(trip.totalSpent).add(newExpense.baseCurrencyPrice);
+      trip.totalSpent = updatedTotal;
+      await expense.save();
+      await trip.save();
+
       return expense;
     } catch (error) {
+      console.log(error);
       throw new ApolloError(error);
     }
   },

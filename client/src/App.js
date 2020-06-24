@@ -1,18 +1,20 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Switch, Route, Link } from 'react-router-dom'
+import { Switch, Route } from 'react-router-dom'
 import { useLazyQuery } from '@apollo/client'
 
-import { Auth, Dashboard, Trip } from './components/pages'
-import TripForm from './components/forms/TripForm'
+import { Auth, Dashboard, Trip, ExpenseItem } from './components/pages'
+import { TripForm, ExpenseForm } from './components/forms'
 import { AuthContext } from './context/auth/AuthContext'
 import { CHECK_AUTH_TOKEN } from './queries/user'
 import checkToken from './utils/checkToken'
-import './styles/App.css'
+import Navbar from './components/Navbar'
 
 function App() {
   const { auth, user } = useContext(AuthContext);
-  const [trip, setTrip] = useState(null);
-  const [editForm, setEditForm] = useState({ isEdit: false, }); // is trip form creating new trip or editing trip
+  const [trip, setTrip] = useState(null); // select trip when user clicks on trip box
+  const [isTripEdit, setTripEdit] = useState({ isEdit: false, }); // is trip form creating a new trip or editing trip
+  const [expenseData, setExpenseData] = useState(null); // edit an expense
+  const [expenseItem, setExpenseItem] = useState(null) // expense info for showing single expense
   const [queryToken] = useLazyQuery(CHECK_AUTH_TOKEN, {
     onCompleted: () => {
       auth.persistUser();
@@ -25,6 +27,7 @@ function App() {
 
   useEffect(() => {
     const persistUser = async () => {
+      console.log('persist user use effect hook on App.js');
       if (user === null) {
         // check is not expired, if not validate token on server
         const isValid = await checkToken()
@@ -34,26 +37,21 @@ function App() {
       }
     }
     persistUser()
-  }, [])
+  }, [user])
 
   return (
     <div className="App">
-      <Link to="/"><h2>Trip Wallet</h2></Link>
+      <Navbar />
       <Switch>
-        <Route exact path="/">
-          <Dashboard user={user} auth={auth} setTrip={setTrip} setEditForm={setEditForm} />
-        </Route>
-        <Route exact path="/tripform">
-          <TripForm user={user} editForm={editForm} />
-        </Route>
-        <Route exact path="/signin">
-          <Auth auth={auth} user={user} />
-        </Route>
-        <Route path="/trip">
-          <Trip trip={trip} setEditForm={setEditForm} />
-        </Route>
+        <Route exact path="/" render={() => <Dashboard user={user} auth={auth} setTrip={setTrip} setTripEdit={setTripEdit} />} />
+        <Route exact path="/trip" render={() => <Trip trip={trip} setTripEdit={setTripEdit} setExpenseData={setExpenseData} setExpenseItem={setExpenseItem} />} />
+        <Route exact path="/trip/expense" render={() => <ExpenseItem data={expenseItem} setExpenseData={setExpenseData} />} />
+        <Route exact path="/trip/expenseform" render={() => <ExpenseForm expenseData={expenseData} />} />
+        <Route exact path="/tripform" render={() => <TripForm user={user} isTripEdit={isTripEdit} />} />
+        <Route exact path="/login" render={() => <Auth auth={auth} user={user} />} />
+        <Route exact path="/register" render={() => <Auth auth={auth} user={user} />} />
       </Switch>
-    </div>
+    </div >
   );
 }
 
