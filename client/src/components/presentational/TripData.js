@@ -13,10 +13,12 @@ function TripData({ data, setTripEdit, setExpenseData, setExpenseItem }) {
     setExpenseData({
       tripID: data.getTrip._id,
       categories: data.getTrip.categories,
-      baseCurrency: data.getTrip.baseCurrency,
-      foreignCurrency: data.getTrip.foreignCurrency,
       isExpenseEdit: false,
-      expenseEditData: null
+      expenseEditData: null,
+      currencies: {
+        baseCurrency: data.getTrip.baseCurrency,
+        foreignCurrency: data.getTrip.foreignCurrency
+      },
     })
   }
 
@@ -51,7 +53,19 @@ function TripData({ data, setTripEdit, setExpenseData, setExpenseItem }) {
         </div>
       </div>
 
-      <ExpenseList expenses={data.getTrip.expenses} setExpenseItem={setExpenseItem} />
+      <ExpenseList
+        expenses={data.getTrip.expenses}
+        setExpenseItem={setExpenseItem}
+        expenseEditData={{
+          tripID: data.getTrip._id,
+          categories: data.getTrip.categories,
+          isExpenseEdit: false,
+          expenseEditData: null,
+          currencies: {
+            baseCurrency: data.getTrip.baseCurrency,
+            foreignCurrency: data.getTrip.foreignCurrency
+          }
+        }} />
 
       <div className="flex flex-row justify-center">
         <Link to="/trip/expenseform" onClick={expenseFormRedirect} className="inline-block  my-5 p-4 bg-green-400" >Add Expense</Link>

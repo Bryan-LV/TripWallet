@@ -49,7 +49,7 @@ function Trips({ setTrip }) {
             </div>
             <div className="p-6 rounded-b-lg">
               <h4 className="text-3xl font-bold pb-2">{trip.tripName}</h4>
-              <p className="text-xl pb-1">{`${trip.baseCurrency} ${trip.totalSpent} | ${trip.foreignCurrency}`}</p>
+              <p className="text-xl pb-1">{`${trip.baseCurrency} ${trip.totalSpent}`}</p>
               <p className="text-xl">{setDates(trip.startDate, trip.endDate)}</p>
             </div>
           </div>

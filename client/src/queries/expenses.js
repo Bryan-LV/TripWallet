@@ -17,6 +17,23 @@ const CREATE_EXPENSE = gql`
 }
 `
 
+const UPDATE_EXPENSE = gql`
+  mutation UpdateExpense ($expenseID: ID! $tripID: ID! $category: String $expenseName: String $foreignPrice: Float $baseCurrencyPrice: Float $spread: Int $startDate: String $endDate: String $notes: String){
+      updateExpense(updateExpense: {expenseID: $expenseID tripID: $tripID category: $category expenseName: $expenseName foreignPrice: $foreignPrice baseCurrencyPrice: $baseCurrencyPrice spread: $spread startDate: $startDate endDate: $endDate notes: $notes}){
+      _id
+      tripID
+      expenseName
+      category
+      foreignPrice
+      baseCurrencyPrice
+      spread
+      startDate
+      endDate
+      notes
+    }
+  }
+`
+
 const DELETE_EXPENSE = gql`
   mutation DeleteExpense($expenseID: ID!){
     deleteExpense(expenseID: $expenseID){
@@ -25,4 +42,4 @@ const DELETE_EXPENSE = gql`
   }
 `
 
-export { CREATE_EXPENSE, DELETE_EXPENSE }
+export { CREATE_EXPENSE, DELETE_EXPENSE, UPDATE_EXPENSE }

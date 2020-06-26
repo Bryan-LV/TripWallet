@@ -41,7 +41,7 @@ const expenseResolvers = {
   updateExpense: async (_, { updateExpense }, context) => {
 
     try {
-      const { expenseID, tripID, category, expenseName, foreignPrice, baseCurrencyPrice, spread, endDate, notes } = updateExpense;
+      const { expenseID, tripID, category, expenseName, foreignPrice, baseCurrencyPrice, spread, startDate, endDate, notes } = updateExpense;
       // check user auth
       let user = checkAuth(context);
       // find trip
@@ -49,7 +49,7 @@ const expenseResolvers = {
       if (!expense) throw new ApolloError('Expense does not exists');
       // check user cannot update expense that is not their own
       // check expense's tripID > trip.user === user.id who is deleting expense
-      let trip = await Trip.findById(expense.tripID);
+      let trip = await Trip.findById(tripID);
       if (toString(user._id) !== toString(trip.user)) {
         console.log('User is not authorized to update expense');
         throw new ApolloError('User is not authorized to update this expense')
@@ -59,7 +59,13 @@ const expenseResolvers = {
       if (category) updateObj.category = category
       if (expenseName) updateObj.expenseName = expenseName
       if (foreignPrice) updateObj.foreignPrice = foreignPrice
-      if (baseCurrencyPrice) updateObj.baseCurrencyPrice = baseCurrencyPrice
+      if (baseCurrencyPrice) {
+        updateObj.baseCurrencyPrice = baseCurrencyPrice
+        const subtractOldExpense = currencyjs(trip.totalSpent).subtract(expense.baseCurrencyPrice);
+        const updateExpense = currencyjs(subtractOldExpense).add(baseCurrencyPrice);
+        trip.totalSpent = updateExpense;
+        await trip.save();
+      }
       if (spread) updateObj.spread = spread
       if (startDate) updateObj.startDate = startDate
       if (endDate) updateObj.endDate = endDate
@@ -83,10 +89,10 @@ const expenseResolvers = {
       // check user cannot delete expense that is not their own
       // check expense's tripID > trip.user === user.id who is deleting expense
       let trip = await Trip.findById(expense.tripID);
-      if (toString(user._id) !== toString(trip.user)) {
-        console.log('User is not authorized to delete expense');
-        throw new ApolloError('User is not authorized to delete this expense')
-      }
+      if (toString(user._id) !== toString(trip.user)) throw new ApolloError('User is not authorized to delete this expense');
+      const updatedTotal = currencyjs(trip.totalSpent).subtract(expense.baseCurrencyPrice);
+      trip.totalSpent = updatedTotal;
+      await trip.save();
       await expense.remove();
       return { message: 'Expense has been deleted' }
     } catch (error) {

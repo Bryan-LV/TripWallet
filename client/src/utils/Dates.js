@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 
-export const createYMDDate = (date) => {
-  if (date) {
+const createYMDDate = (date) => {
+  if (date && dayjs(date).isValid()) {
     const year = dayjs(date).get('y');
     const day = dayjs(date).get('date');
     let month = dayjs(date).get('month');
@@ -16,3 +16,5 @@ export const createYMDDate = (date) => {
     return `${year}-${month}-${day}`;
   }
 }
+
+export { createYMDDate }

@@ -64,7 +64,7 @@ module.exports = gql`
     updateTrip(updateTrip:UpdateTrip): Trip
     deleteTrip(tripID:ID!): Response
     createExpense(newExpense: NewExpense): Expense
-    updateExpense(UpdateExpense: UpdateExpense): Expense
+    updateExpense(updateExpense: UpdateExpense): Expense
     deleteExpense(expenseID: ID!): Response
   }
 
@@ -125,11 +125,12 @@ module.exports = gql`
   }
 
   input UpdateExpense {
+    expenseID: ID!
     tripID: ID!
     category: String
     expenseName: String
-    foreignPrice: Int
-    baseCurrencyPrice: Int
+    foreignPrice: Float
+    baseCurrencyPrice: Float
     spread: Int
     startDate: String
     endDate: String

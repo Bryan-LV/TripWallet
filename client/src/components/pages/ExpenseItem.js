@@ -13,22 +13,27 @@ function ExpenseItem({ data, setExpenseData }) {
   const handleDelete = () => {
     deleteExpense({ variables: { expenseID: data._id } });
   }
+  const handleEditExpenseRedirect = () => {
+    const expenseData = { ...data.expenseEditData, expenseEditData: data.exp, isExpenseEdit: true }
+    setExpenseData(expenseData)
+  }
+
 
   // TODO: back to trip button
   return (
     <div>
-      <h3>{data.expenseName}</h3>
-      <h3>{data.category}</h3>
-      <h3>{data.foreignPrice}</h3>
-      <h3>{data.baseCurrencyPrice}</h3>
-      <h3>{data.spread}</h3>
-      <h3>{data.startDate}</h3>
-      <h3>{data?.endDate}</h3>
+      <h3>{data.exp.expenseName}</h3>
+      <h3>{data.exp.category}</h3>
+      <h3>{data.exp.foreignPrice}</h3>
+      <h3>{data.exp.baseCurrencyPrice}</h3>
+      <h3>{data.exp.spread}</h3>
+      <h3>{data.exp.startDate}</h3>
+      <h3>{data?.exp.endDate}</h3>
 
       <div className="">
         <button onClick={() => setDelete(!unlockDelete)}>Unlock</button>
         {unlockDelete && <button onClick={handleDelete}>Delete Expense</button>}
-        <Link to="/trip/expenseform" onClick={() => setExpenseData(data)}>Edit Expense</Link>
+        <Link to="/trip/expenseform" onClick={handleEditExpenseRedirect}>Edit Expense</Link>
       </div>
     </div>
   )

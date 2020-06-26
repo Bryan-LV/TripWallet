@@ -2,7 +2,7 @@ import React from 'react'
 import dayjs from 'dayjs'
 import { Link } from 'react-router-dom'
 
-function ExpenseList({ expenses, setExpenseItem }) {
+function ExpenseList({ expenses, setExpenseItem, expenseEditData }) {
   // props receives expenses array, sort array by date
   const sortedExpenses = expenses.slice().sort((a, b) => {
     let aDate = new Date(a.startDate)
@@ -13,7 +13,7 @@ function ExpenseList({ expenses, setExpenseItem }) {
   return (
     <div>
       {sortedExpenses.map(exp => {
-        return (<Link to="/trip/expense" onClick={() => setExpenseItem(exp)} key={exp._id}  >
+        return (<Link to="/trip/expense" onClick={() => setExpenseItem({ exp, expenseEditData })} key={exp._id}  >
           <div className="flex justify-between mx-10 py-3">
             <h4>{exp.expenseName}</h4>
             <div className="flex justify-between">
