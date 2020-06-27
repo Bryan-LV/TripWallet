@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import currency from 'currency.js'
 import ExpenseList from './ExpenseList'
+import ProgressBar from './ProgressBar';
 
 function TripData({ data, setTripEdit, setExpenseData, setExpenseItem }) {
 
@@ -37,9 +38,7 @@ function TripData({ data, setTripEdit, setExpenseData, setExpenseItem }) {
 
       <div>
         <h1 className="text-4xl text-center" >{data.getTrip.tripName}</h1>
-        <div className="h-1 bg-black w-5/6 m-auto relative mt-4">
-          <div className="h-1 bg-green-400 w-5/6 m-auto absolute "></div>
-        </div>
+        <ProgressBar totalSpent={calcTotalSpent()} budget={data.getTrip.budget} />
         <div className="flex flex-row justify-between mx-10 py-4">
           <h4>Spent {calcTotalSpent()}</h4>
           {data.getTrip.budget ? <h4>Budget {formatMoney(data.getTrip.budget)}</h4> : <h4>No Budget</h4>}
