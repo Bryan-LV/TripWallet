@@ -2,6 +2,7 @@ import React from 'react'
 import { useQuery } from '@apollo/client'
 import { useHistory } from 'react-router-dom'
 import { FETCH_TRIPS } from '../../queries/trips'
+import { createDMYDate } from '../../utils/Dates'
 import * as dayjs from 'dayjs'
 
 import langkawi from '../../assets/media/langkawi.jpg'
@@ -25,22 +26,17 @@ function Trips({ setTrip }) {
 
   // FIXME: utility function CreateYMD does this for us already
   const setDates = (startDate, endDate) => {
-    const startYear = dayjs(startDate).get('y');
-    const startMonth = dayjs(startDate).get('M');
-    const startDay = dayjs(startDate).get('date');
+    const formatStartDate = createDMYDate(startDate);
     if (!endDate) {
-      return `${startDay}/${startMonth}/${startYear}`
+      return formatStartDate;
     } else {
-      const endYear = dayjs(endDate).get('y');
-      const endMonth = dayjs(endDate).get('M');
-      const endDay = dayjs(endDate).get('date');
-      return `${startDay}/${startMonth}/${startYear} - ${endDay}/${endMonth}/${endYear}`
+      const formatEndDate = createDMYDate(endDate);
+      return `${formatStartDate} - ${formatEndDate} `
     }
   }
 
-  console.log(data);
   return (
-    <div className="mx-2">
+    <div className="mx-2 cursor-pointer">
       {data && data.getTrips.map(trip => {
         return (
           <div className="rounded-lg bg-white max-w-sm m-auto mb-4 mt-3 shadow-lg" key={trip._id} onClick={() => selectTrip(trip)}>

@@ -38,7 +38,7 @@ function TripData({ data, setTripEdit, setExpenseData, setExpenseItem }) {
 
       <div>
         <h1 className="text-4xl text-center" >{data.getTrip.tripName}</h1>
-        <ProgressBar totalSpent={calcTotalSpent()} budget={data.getTrip.budget} />
+        {data.getTrip.budget && <ProgressBar totalSpent={calcTotalSpent()} budget={data.getTrip.budget} />}
         <div className="flex flex-row justify-between mx-10 py-4">
           <h4>Spent {calcTotalSpent()}</h4>
           {data.getTrip.budget ? <h4>Budget {formatMoney(data.getTrip.budget)}</h4> : <h4>No Budget</h4>}

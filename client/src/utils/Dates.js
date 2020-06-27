@@ -17,4 +17,20 @@ const createYMDDate = (date) => {
   }
 }
 
-export { createYMDDate }
+const createDMYDate = (date) => {
+  if (!date) {
+    const Year = dayjs().get('y');
+    const Month = dayjs().get('M');
+    const Day = dayjs().get('date');
+    return `${Day}/${Month}/${Year}`
+  }
+  else {
+    const Year = dayjs(date).get('y');
+    const Month = dayjs(date).get('M');
+    const Day = dayjs(date).get('date');
+    return `${Day}/${Month}/${Year}`
+  }
+}
+
+
+export { createYMDDate, createDMYDate }
