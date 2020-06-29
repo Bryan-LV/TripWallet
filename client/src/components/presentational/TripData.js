@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 import currency from 'currency.js'
 import ExpenseList from './ExpenseList'
 import ProgressBar from './ProgressBar';
+import plus from '../../assets/media/plus.png'
+import edit from '../../assets/media/edit.png'
 
 function TripData({ data, setTripEdit, setExpenseData, setExpenseItem }) {
 
@@ -37,18 +39,21 @@ function TripData({ data, setTripEdit, setExpenseData, setExpenseItem }) {
     <div className="">
 
       <div>
-        <h1 className="text-4xl text-center " >{data.getTrip.tripName}</h1>
+        <h1 className="text-4xl text-center pt-5" >{data.getTrip.tripName}</h1>
         {data.getTrip.budget && <ProgressBar totalSpent={calcTotalSpent()} budget={data.getTrip.budget} />}
-        <div className="flex flex-row justify-between mx-10 py-5">
+        <div className="flex flex-row justify-between mx-10 py-8">
           <h4><span className="font-medium">Spent </span> <span className="text-gray-800">{calcTotalSpent()}</span></h4>
           {data.getTrip.budget ? <h4> <span className="font-medium">Budget</span> <span className="text-gray-800">{formatMoney(data.getTrip.budget)}</span></h4> : <h4>No Budget</h4>}
         </div>
       </div>
 
-      <div className=" py-4 bg-gray-200">
-        <div className="flex flex-row justify-start mx-10 font-semibold">
+      <div className=" py-4 bg-gray-200 flex flex-row justify-between">
+        <div className="flex flex-row justify-start ml-10 font-semibold">
           <h4 className="pr-2">Date</h4>
           <h4 className="">Category</h4>
+        </div>
+        <div className="mr-10 font-light">
+          <p><span className="text-sm">{data.getTrip.baseCurrency}</span> / <span className="text-sm">{data.getTrip.foreignCurrency}</span></p>
         </div>
       </div>
 
@@ -66,9 +71,17 @@ function TripData({ data, setTripEdit, setExpenseData, setExpenseItem }) {
           }
         }} />
 
-      <div className="flex flex-row justify-center">
-        <Link to="/trip/expenseform" onClick={expenseFormRedirect} className="inline-block  my-5 p-4 bg-green-400" >Add Expense</Link>
-        <Link to="/tripform" onClick={() => setTripEdit({ isEdit: true, formDetails: data.getTrip })} className="inline-block my-5 p-4 bg-green-400">Edit Trip</Link>
+      <div className="flex flex-row justify-between mx-10">
+        <Link to="/tripform" onClick={() => setTripEdit({ isEdit: true, formDetails: data.getTrip })} className="inline-block my-5 rounded-full bg-green-400 rounded-lg">
+          <div className="w-16 h-16">
+            <img className="relative trip-icons" src={edit} alt="edit trip" />
+          </div>
+        </Link>
+        <Link to="/trip/expenseform" onClick={expenseFormRedirect} className="inline-block  my-5 bg-green-400 rounded-full mr-1" >
+          <div className="w-16 h-16">
+            <img className="relative trip-icons" src={plus} alt="add expense" />
+          </div>
+        </Link>
       </div>
     </div>
   )

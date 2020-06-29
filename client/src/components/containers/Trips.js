@@ -1,5 +1,5 @@
-import React from 'react'
-import { useQuery } from '@apollo/client'
+import React, { useEffect } from 'react'
+import { useLazyQuery } from '@apollo/client'
 import { useHistory } from 'react-router-dom'
 import { FETCH_TRIPS } from '../../queries/trips'
 import { createDMYDate } from '../../utils/Dates'
@@ -9,9 +9,15 @@ import langkawi from '../../assets/media/langkawi.jpg'
 
 function Trips({ setTrip }) {
   // query user trip
-  const { error, data } = useQuery(FETCH_TRIPS);
+  const [fetchTrips, { data }] = useLazyQuery(FETCH_TRIPS, {
+    onError: err => console.log(err)
+  });
+
   const history = useHistory();
-  if (error) console.log(error);
+
+  useEffect(() => {
+    fetchTrips();
+  }, [])
 
   const selectTrip = (trip) => {
     // set Trip
