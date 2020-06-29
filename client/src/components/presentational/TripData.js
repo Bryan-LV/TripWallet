@@ -37,16 +37,16 @@ function TripData({ data, setTripEdit, setExpenseData, setExpenseItem }) {
     <div className="">
 
       <div>
-        <h1 className="text-4xl text-center" >{data.getTrip.tripName}</h1>
+        <h1 className="text-4xl text-center " >{data.getTrip.tripName}</h1>
         {data.getTrip.budget && <ProgressBar totalSpent={calcTotalSpent()} budget={data.getTrip.budget} />}
-        <div className="flex flex-row justify-between mx-10 py-4">
-          <h4>Spent {calcTotalSpent()}</h4>
-          {data.getTrip.budget ? <h4>Budget {formatMoney(data.getTrip.budget)}</h4> : <h4>No Budget</h4>}
+        <div className="flex flex-row justify-between mx-10 py-5">
+          <h4><span className="font-medium">Spent </span> <span className="text-gray-800">{calcTotalSpent()}</span></h4>
+          {data.getTrip.budget ? <h4> <span className="font-medium">Budget</span> <span className="text-gray-800">{formatMoney(data.getTrip.budget)}</span></h4> : <h4>No Budget</h4>}
         </div>
       </div>
 
-      <div className=" py-4 bg-green-400">
-        <div className="flex flex-row justify-start mx-10">
+      <div className=" py-4 bg-gray-200">
+        <div className="flex flex-row justify-start mx-10 font-semibold">
           <h4 className="pr-2">Date</h4>
           <h4 className="">Category</h4>
         </div>

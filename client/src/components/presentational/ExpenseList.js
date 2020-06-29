@@ -17,11 +17,11 @@ function ExpenseList({ expenses, setExpenseItem, expenseEditData }) {
         return noRepeatingDates.map(date => {
           if (exp.startDate === date) {
             return (<Link to="/trip/expense" onClick={() => setExpenseItem({ exp, expenseEditData })} key={exp._id}  >
-              <div className="flex justify-between mx-10 py-3">
-                <h4>{toTitleCase(exp.expenseName)}</h4>
-                <div className="flex justify-between">
-                  <h4>{exp.baseCurrencyPrice}</h4>/
-                    <h4>{exp.foreignPrice}</h4>
+              <div className="flex justify-between mx-10 py-3 font-light">
+                <h4 className="text-gray-800">{toTitleCase(exp.expenseName)}</h4>
+                <div className="flex justify-between text-gray-800">
+                  <h4>{exp.baseCurrencyPrice}</h4> <span className="px-1">/</span>
+                  <h4>{exp.foreignPrice}</h4>
                 </div>
               </div>
             </Link>)

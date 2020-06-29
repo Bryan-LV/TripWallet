@@ -52,7 +52,17 @@ function TripForm({ isTripEdit }) {
       })
     }
   });
-  const [updateTrip] = useMutation(UPDATE_TRIP, { onError: (err) => console.log(err) });
+  const [updateTrip] = useMutation(UPDATE_TRIP, {
+    onError: (err) => console.log(err),
+    update: (cache, { data }) => {
+      const cachedTrips = cache.readQuery({ query: FETCH_TRIPS });
+      const newTrip = data.UpdateTrip;
+      cache.writeQuery({
+        query: FETCH_TRIPS,
+        data: { getTrips: [...cachedTrips.getTrips, newTrip] }
+      })
+    }
+  });
   const [deleteTrip] = useMutation(DELETE_TRIP, {
     onError: (err) => console.log(err),
     update: (cache, { data }) => {

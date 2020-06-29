@@ -24,7 +24,6 @@ function Trips({ setTrip }) {
     history.push('/trip');
   }
 
-  // FIXME: utility function CreateYMD does this for us already
   const setDates = (startDate, endDate) => {
     const formatStartDate = createDMYDate(startDate);
     if (!endDate) {

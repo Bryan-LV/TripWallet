@@ -11,8 +11,9 @@ function ExpenseItem({ data, setExpenseData }) {
   })
   // TODO: add delete & edit expense
   const handleDelete = () => {
-    deleteExpense({ variables: { expenseID: data._id } });
+    deleteExpense({ variables: { expenseID: data.exp._id } });
   }
+
   const handleEditExpenseRedirect = () => {
     const expenseData = { ...data.expenseEditData, expenseEditData: data.exp, isExpenseEdit: true }
     setExpenseData(expenseData)

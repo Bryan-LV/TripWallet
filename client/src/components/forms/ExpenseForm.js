@@ -62,7 +62,7 @@ function ExpenseForm({ expenseData: { tripID, currencies, categories, isExpenseE
   const [exchangeRate, setExchangeRate] = useState(null);
   const history = useHistory();
   // Mutations
-  const [addExpense, { error }] = useMutation(CREATE_EXPENSE, {
+  const [addExpense] = useMutation(CREATE_EXPENSE, {
     onError: err => console.log(err),
     // onCompleted: data => history.push('/trip'),
     update: (cache, { data }) => {

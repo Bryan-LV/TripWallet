@@ -67,12 +67,19 @@ const CREATE_TRIP = gql`
 const UPDATE_TRIP = gql`
   mutation UpdateTrip($tripID: ID!, $tripName: String, $foreignCurrency: String, $budget: Int, $startDate: String, $endDate: String, $photo: String){
     updateTrip(updateTrip: {tripID: $tripID, tripName: $tripName, foreignCurrency: $foreignCurrency, budget: $budget, startDate: $startDate, endDate: $endDate, photo: $photo}){
+      _id
+      user
       tripName
       foreignCurrency
       baseCurrency
       budget
       startDate
       endDate
+      categories
+      
+      expenses{
+        _id
+      }
     }
   }
 `

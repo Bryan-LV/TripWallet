@@ -16,8 +16,8 @@ function ProgressBar({ totalSpent, budget }) {
   console.log(progressBarColor);
 
   return (
-    <div className="h-1 bg-black w-5/6 m-auto relative mt-4">
-      <div style={{ width: `${percentage}%` }} className={`h-1 m-auto absolute ${progressBarColor}`}></div>
+    <div className="h-1 bg-black w-5/6 m-auto relative mt-5 rounded-lg">
+      <div style={{ width: `${percentage}%` }} className={`h-1 m-auto absolute rounded-lg ${progressBarColor}`}></div>
     </div>
   )
 }
