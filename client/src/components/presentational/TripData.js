@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom'
 import currency from 'currency.js'
 import ExpenseList from './ExpenseList'
 import ProgressBar from './ProgressBar';
-import plus from '../../assets/media/plus.png'
-import edit from '../../assets/media/edit.png'
+// import plus from '../../assets/media/plus.png'
+import plus from '../../assets/media/plus.svg'
+// import edit from '../../assets/media/edit.png'
+import pen from '../../assets/media/pen.svg'
 
 function TripData({ data, setTripEdit, setExpenseData, setExpenseItem }) {
 
@@ -71,15 +73,16 @@ function TripData({ data, setTripEdit, setExpenseData, setExpenseItem }) {
           }
         }} />
 
-      <div className="flex flex-row justify-between mx-10">
-        <Link to="/tripform" onClick={() => setTripEdit({ isEdit: true, formDetails: data.getTrip })} className="inline-block my-5 rounded-full bg-green-400 rounded-lg">
-          <div className="w-16 h-16">
-            <img className="relative trip-icons" src={edit} alt="edit trip" />
+      <div className="flex flex-row justify-between items-end px-8 bg-gray-100">
+        <Link to="/tripform" onClick={() => setTripEdit({ isEdit: true, formDetails: data.getTrip })} className="inline-block my-5 rounded-full rounded-lg">
+          <div className="w-10">
+            <img className="relative trip-icons" src={pen} alt="edit trip" />
           </div>
         </Link>
-        <Link to="/trip/expenseform" onClick={expenseFormRedirect} className="inline-block  my-5 bg-green-400 rounded-full mr-1" >
-          <div className="w-16 h-16">
-            <img className="relative trip-icons" src={plus} alt="add expense" />
+        <Link to="/trip/expenseform" onClick={expenseFormRedirect} className="inline-block  my-5 rounded-full mr-1" >
+          <div className="">
+            <p className="py-2 px-4 bg-red-600 text-white rounded-lg font-semibold">Add Expense</p>
+            {/* <img className="relative trip-icons" src={plus} alt="add expense" /> */}
           </div>
         </Link>
       </div>

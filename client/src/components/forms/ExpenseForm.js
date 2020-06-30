@@ -230,7 +230,7 @@ function ExpenseForm({ expenseData: { tripID, currencies, categories, isExpenseE
           <ErrorMessage name="notes" className="py-2 text-red-700">{(errorMsg) => <p className="mx-10 text-red-700">{errorMsg}</p>}</ErrorMessage>
 
           <div className="text-center mt-4">
-            <button className="py-3 px-6 text-lg font-medium bg-teal-400 w-3/4 md:w-1/2" type="submit">{isExpenseEdit ? 'Save Edit' : 'Add Expense'}</button>
+            <button className="py-3 px-6 text-lg font-medium rounded-lg bg-teal-400 w-3/4 md:w-1/2" type="submit">{isExpenseEdit ? 'Save Edit' : 'Add Expense'}</button>
           </div>
         </Form>
       </Formik>

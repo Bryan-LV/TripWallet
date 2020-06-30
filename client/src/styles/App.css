@@ -20,12 +20,6 @@ body {
   flex-shrink: 0;
 }
 
-.trip-icons {
-  width: 2.25rem;
-  top: 14px;
-  left: 15px;
-}
-
 /* const accent='#59E8AC';
 const secondAccent='#F9CE31';
 const white='#fafafa';

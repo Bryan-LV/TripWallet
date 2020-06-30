@@ -29,14 +29,14 @@ function ExpenseItem({ data, setExpenseData }) {
   // TODO: back to trip button
   return (
     <div className="px-8 rounded-lg bg-white max-w-sm m-auto mb-4 mt-3 shadow-lg">
-      <div className="flex flex-row justify-start border-b py-4">
+      <div className="flex flex-row justify-start items-start border-b py-4">
         <h2 className="pr-4 text-2xl">
           <span className="text-3xl font-thin">{expenseItem.foreignPrice}</span>
-          <span className="pl-1 text-base">{foreignCurrency}</span>
+          <span className="pl-1 text-xs">{foreignCurrency}</span>
         </h2>
         <h2 className="text-2xl">
           <span className="text-3xl font-thin">{expenseItem.baseCurrencyPrice}</span>
-          <span className="pl-1 text-base">{baseCurrency}</span>
+          <span className="pl-1 text-xs">{baseCurrency}</span>
         </h2>
       </div>
       <h3 className=" pt-4">
@@ -58,7 +58,7 @@ function ExpenseItem({ data, setExpenseData }) {
         <div className="w-8 cursor-pointer" onClick={() => setDelete(!unlockDelete)}>
           <img src={lockIcon} alt="unlock delete button" />
         </div>
-        {unlockDelete && <button className="hover:underline bg-gray-200 py-1 px-2 rounded-lg cursor-pointer" onClick={handleDelete}>Delete Expense</button>}
+        {unlockDelete && <button className="hover:underline bg-red-600 text-white py-1 px-2 rounded-lg cursor-pointer" onClick={handleDelete}>Delete Expense</button>}
         <Link to="/trip/expenseform" className="hover:underline py-1 px-2" onClick={handleEditExpenseRedirect}>Edit Expense</Link>
       </div>
     </div>
