@@ -47,7 +47,7 @@ const Login = ({ auth, url }) => {
         <ErrorMessage name="email">{(errorMsg) => <p className="mx-10">{errorMsg}</p>}</ErrorMessage>
 
         <div className="flex items-center border-b border-b-2 border-gray-900 py-2 mx-10">
-          <Field type="text" placeholder="password" name="password" className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" />
+          <Field type="password" placeholder="password" name="password" className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" />
         </div>
         <ErrorMessage name="password">{(errorMsg) => <p className="mx-10">{errorMsg}</p>}</ErrorMessage>
 
@@ -119,10 +119,10 @@ const Register = ({ auth }) => {
           </Field>
         </div>
         <div className="flex items-center border-b border-b-2 border-gray-900 py-2 mx-10">
-          <Field type="text" name="password" placeholder="password" className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" />
+          <Field type="password" name="password" placeholder="password" className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" />
         </div>
         <div className="flex items-center border-b border-b-2 border-gray-900 py-2 mx-10">
-          <Field type="text" name="confirmPassword" placeholder="confirmPassword" className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" />
+          <Field type="password" name="confirmPassword" placeholder="confirmPassword" className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" />
         </div>
 
         <Link to="/login" className="inline-block mx-10 my-5 p-4 bg-green-400"> Login to your account</Link>

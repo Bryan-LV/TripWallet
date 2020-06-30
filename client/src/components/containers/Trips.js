@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react'
 import { useLazyQuery } from '@apollo/client'
 import { useHistory } from 'react-router-dom'
-import { FETCH_TRIPS } from '../../queries/trips'
-import { createDMYDate } from '../../utils/Dates'
 import * as dayjs from 'dayjs'
 
+import { FETCH_TRIPS } from '../../queries/trips'
+import { createDMYDate } from '../../utils/Dates'
+import { toTitleCase } from '../../utils/StringHelpers'
 import langkawi from '../../assets/media/langkawi.jpg'
 
 function Trips({ setTrip }) {
@@ -49,7 +50,7 @@ function Trips({ setTrip }) {
               <img className="rounded-t-lg" src={langkawi} />
             </div>
             <div className="p-6 rounded-b-lg">
-              <h4 className="text-3xl font-bold pb-2">{trip.tripName}</h4>
+              <h4 className="text-3xl font-semibold pb-2">{toTitleCase(trip.tripName)}</h4>
               <p className="text-xl pb-1">{`${trip.baseCurrency} ${trip.totalSpent}`}</p>
               <p className="text-xl">{setDates(trip.startDate, trip.endDate)}</p>
             </div>

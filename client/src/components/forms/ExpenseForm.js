@@ -179,55 +179,59 @@ function ExpenseForm({ expenseData: { tripID, currencies, categories, isExpenseE
 
   return (
     <div className="px-8">
-      <h3 className="">{isExpenseEdit ? 'Edit Expense' : 'Add Expense'}</h3>
+      <h3 className="py-4 ">{isExpenseEdit ? 'Edit Expense' : 'Add Expense'}</h3>
       <Formik
         initialValues={initFormValues(tripID, expenseEditData)}
         validationSchema={validation}
         onSubmit={handleSubmit}>
         <Form className="w-full max-w-sm">
 
-          <div className="flex items-center border-b border-b-2 border-gray-100 py-2">
+          <div className="flex items-center border-b border-b-2 border-gray-900 py-2">
             <label htmlFor="foreignPrice" className="pl-2">{currencies.foreignCurrency}</label>
             <Field type="number" name="foreignPrice" placeholder="Price" validate={handleCurrencyConversion} className="appearance-none bg-transparent border-none w-1/3 text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" />
             <p>{currencies.baseCurrency}</p>
             <p className="mx-10">{conversionPrice}</p>
           </div>
-          <ErrorMessage name="foreignPrice" className="py-2 text-red-700" />
+          <ErrorMessage name="foreignPrice" className="py-2 text-red-700">{(errorMsg) => <p className="mx-10 text-red-700">{errorMsg}</p>}</ErrorMessage>
 
-          <div className="flex items-center border-b border-b-2 border-gray-100 py-2">
+          <div className="flex items-center border-b border-b-2 border-gray-900 py-2">
             <Field type="text" name="expenseName" placeholder="Expense name" className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" />
           </div>
-          <ErrorMessage name="expenseName" className="py-2 text-red-700" />
+          <ErrorMessage name="expenseName" className="py-2 text-red-700">{(errorMsg) => <p className="mx-10 text-red-700">{errorMsg}</p>}</ErrorMessage>
 
-          <div className="flex items-center border-b border-b-2 border-gray-100 py-2">
+          <div className="flex items-center border-b border-b-2 border-gray-900 py-2">
             <Field type="text" name="category" placeholder="Category" list="category" className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" />
             <datalist id="category">
               {categories ? (categories.map(category => <option key={category} value={category}>{category}</option>)) : <> <option value="Food">Food</option> <option value="Accommodation">Accommodation</option> </>}
             </datalist>
           </div>
-          <ErrorMessage name="category" className="py-2 text-red-700" />
+          <ErrorMessage name="category" className="py-2 text-red-700">{(errorMsg) => <p className="mx-10 text-red-700">{errorMsg}</p>}</ErrorMessage>
 
           <div className="flex items-center border-b border-b-2 border-gray-900 py-2">
-            <label htmlFor="startDate" className="text-md px-2">Date</label>
+            <label htmlFor="startDate" className="text-md px-2 text-gray-500">Date</label>
             <DatePickerField name="startDate" className="bg-transparent" />
           </div>
-          <ErrorMessage name="startDate" className="py-2 text-red-700" />
-
-          <p className="px-6 py-3 my-3 bg-blue-500 rounded-lg inline-block text-right cursor-pointer" onClick={() => setSpread(!isSpread)}>Spread</p>
+          <ErrorMessage name="startDate" className="py-2 text-red-700">{(errorMsg) => <p className="mx-10 text-red-700">{errorMsg}</p>}</ErrorMessage>
 
           {isSpread ? (
             <div className="flex items-center border-b border-b-2 border-gray-900 py-2 mt-4">
-              <label htmlFor="endDate" className="text-md px-2">End Date</label>
+              <label htmlFor="endDate" className="text-md px-2 text-gray-700">End Date</label>
               <DatePickerField name="endDate" className="bg-transparent" />
             </div>) : null}
-          <ErrorMessage name="endDate" className="py-2 text-red-700" />
+          <ErrorMessage name="endDate" className="py-2 text-red-700">{(errorMsg) => <p className="mx-10 text-red-700">{errorMsg}</p>}</ErrorMessage>
 
-          <div className="flex items-center border-b border-b-2 border-gray-100 py-2">
+          <div className="text-right">
+            <p className="px-4 py-2 my-3 bg-yellow-400 rounded-lg inline-block text-right cursor-pointer" onClick={() => setSpread(!isSpread)}>Spread</p>
+          </div>
+
+          <div className="flex items-center border-b border-b-2 border-gray-900 py-2">
             <Field type="text" name="notes" placeholder="Notes" className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" />
           </div>
-          <ErrorMessage name="notes" className="py-2 text-red-700" />
+          <ErrorMessage name="notes" className="py-2 text-red-700">{(errorMsg) => <p className="mx-10 text-red-700">{errorMsg}</p>}</ErrorMessage>
 
-          <button type="submit">{isExpenseEdit ? 'Save Edit' : 'Add Expense'}</button>
+          <div className="text-center mt-4">
+            <button className="py-3 px-6 text-lg font-medium bg-teal-400 w-3/4 md:w-1/2" type="submit">{isExpenseEdit ? 'Save Edit' : 'Add Expense'}</button>
+          </div>
         </Form>
       </Formik>
     </div>
