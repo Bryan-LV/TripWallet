@@ -221,7 +221,7 @@ function ExpenseForm({ expenseData: { tripID, currencies, categories, isExpenseE
           <ErrorMessage name="endDate" className="py-2 text-red-700">{(errorMsg) => <p className="mx-10 text-red-700">{errorMsg}</p>}</ErrorMessage>
 
           <div className="text-right">
-            <p className="px-4 py-2 my-3 bg-yellow-400 rounded-lg inline-block text-right cursor-pointer" onClick={() => setSpread(!isSpread)}>Spread</p>
+            <p className="px-4 py-2 my-3 border-solid border border-gray-800 rounded-lg inline-block text-right cursor-pointer" onClick={() => setSpread(!isSpread)}>Spread</p>
           </div>
 
           <div className="flex items-center border-b border-b-2 border-gray-900 py-2">
@@ -230,7 +230,7 @@ function ExpenseForm({ expenseData: { tripID, currencies, categories, isExpenseE
           <ErrorMessage name="notes" className="py-2 text-red-700">{(errorMsg) => <p className="mx-10 text-red-700">{errorMsg}</p>}</ErrorMessage>
 
           <div className="text-center mt-4">
-            <button className="py-3 px-6 text-lg font-medium rounded-lg bg-teal-400 w-3/4 md:w-1/2" type="submit">{isExpenseEdit ? 'Save Edit' : 'Add Expense'}</button>
+            <button className="py-3 px-6 text-lg font-medium rounded-lg text-white bg-red-600 w-3/4 md:w-1/2" type="submit">{isExpenseEdit ? 'Save Edit' : 'Add Expense'}</button>
           </div>
         </Form>
       </Formik>

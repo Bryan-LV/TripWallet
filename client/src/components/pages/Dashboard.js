@@ -13,8 +13,8 @@ function Dashboard({ user, setTrip, auth, setTripEdit }) {
   return (
     <div className="bg-gray">
       <Trips setTrip={setTrip} />
-      <Link to="/tripform" onClick={() => setTripEdit({ isEdit: false, formDetails: null })} className="inline-block mx-10 my-5 p-4 bg-green-400">Add trip</Link>
-      <button onClick={auth.logout} className="inline-block mx-10 my-5 p-4 bg-red-400">Logout</button>
+      <Link to="/tripform" onClick={() => setTripEdit({ isEdit: false, formDetails: null })} className="inline-block mx-10 my-5 p-4 bg-red-600 text-white font-semibold rounded-lg">Add trip</Link>
+      <button onClick={auth.logout} className="inline-block mx-10 my-5 p-4 bg-red-600 rounded-lg text-white font-semibold">Logout</button>
     </div>
   )
 }

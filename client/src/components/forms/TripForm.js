@@ -7,6 +7,7 @@ import * as yup from 'yup';
 import currencyCodes from '../../utils/currencyCodes'
 import { CREATE_TRIP, UPDATE_TRIP, DELETE_TRIP, FETCH_TRIPS } from '../../queries/trips'
 import DatePickerField from './DatePickerField';
+import lockIcon from '../../assets/media/lock.svg'
 import "react-datepicker/dist/react-datepicker.css";
 
 const initVals = {
@@ -135,28 +136,30 @@ function TripForm({ isTripEdit }) {
             <Field type="text" name="photo" placeholder="Photo" className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" />
           </div>
           <div className="text-center mt-4">
-            <button type="submit" className="py-3 px-6 text-lg font-medium rounded-lg bg-teal-400 w-3/4 md:w-1/2">Save Trip</button>
+            <button type="submit" className="py-3 px-6 text-lg font-medium text-white rounded-lg bg-red-600 w-3/4 md:w-1/2">Save Trip</button>
           </div>
         </Form>
       </Formik>
       {isTripEdit.isEdit && (
-        <div className="text-center mt-4">
-          <button
+        <div className="w-8 cursor-pointer pt-2 m-auto" onClick={() => setDeleteSwitch(!deleteSwitch)}>
+          <img src={lockIcon} alt="unlock delete button" />
+          {/* <button
             onClick={() => setDeleteSwitch(!deleteSwitch)}
             className="py-3 px-6 text-lg font-medium rounded-lg bg-yellow-400 w-3/4 md:w-1/2" >
             Enable Delete Button
-          </button>
+          </button> */}
         </div>
       )}
       {deleteSwitch && isTripEdit.isEdit && (
-        <div className="text-center mt-4">
+        <div className="mt-4">
           <button
             onClick={() => deleteTrip({ variables: { tripID: isTripEdit.formDetails._id } })}
-            className="py-3 px-6 text-lg font-medium rounded-lg bg-red-500 w-3/4 md:w-1/2">
+            className="block m-auto py-3 px-6 text-lg font-medium rounded-lg text-white bg-gray-800 w-3/4 md:w-1/2">
             Delete Trip
           </button>
         </div>
       )}
+
     </div>
   )
 }

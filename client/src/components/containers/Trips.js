@@ -7,6 +7,7 @@ import { FETCH_TRIPS } from '../../queries/trips'
 import { createDMYDate } from '../../utils/Dates'
 import { toTitleCase } from '../../utils/StringHelpers'
 import langkawi from '../../assets/media/langkawi.jpg'
+import pin from '../../assets/media/pin.svg'
 
 function Trips({ setTrip }) {
   // query user trip
@@ -50,9 +51,17 @@ function Trips({ setTrip }) {
               <img className="rounded-t-lg" src={langkawi} />
             </div>
             <div className="p-6 rounded-b-lg">
-              <h4 className="text-3xl font-semibold pb-2">{toTitleCase(trip.tripName)}</h4>
-              <p className="text-xl pb-1">{`${trip.baseCurrency} ${trip.totalSpent}`}</p>
-              <p className="text-xl">{setDates(trip.startDate, trip.endDate)}</p>
+              <h4 className="text-3xl font-semibold">{toTitleCase(trip.tripName)}</h4>
+              <p className="text-xl font-thin pb-1">{setDates(trip.startDate, trip.endDate)}</p>
+              <div className="flex flex-row justify-between items-center">
+                <p className="text-xl pb-2">
+                  <span className="font-thin pr-1"> {trip.totalSpent}</span>
+                  <span className="text-xs">{trip.baseCurrency}</span>
+                </p>
+                <div className="w-8 relative trip-pin">
+                  <img src={pin} alt="" />
+                </div>
+              </div>
             </div>
           </div>
         )

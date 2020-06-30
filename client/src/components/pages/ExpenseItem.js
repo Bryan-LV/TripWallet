@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useMutation } from '@apollo/client';
 import { DELETE_EXPENSE } from '../../queries/expenses'
 import { Link } from 'react-router-dom';
 import { createDMYDate } from '../../utils/Dates'
 import lockIcon from '../../assets/media/lock.svg'
-import unlockIcon from '../../assets/media/unlock.svg'
 
 function ExpenseItem({ data, setExpenseData }) {
   if (data) localStorage.setItem('expenseItem', JSON.stringify(data.exp));
