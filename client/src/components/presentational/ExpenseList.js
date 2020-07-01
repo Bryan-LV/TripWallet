@@ -12,7 +12,7 @@ function ExpenseList({ expenses, setExpenseItem, expenseEditData }) {
   })
   const noRepeatingDates = Array.from(new Set(sortedExpenses.map(exp => exp.startDate)));
   return (
-    <div>
+    <div className="rounded-lg bg-white max-w-md m-auto mb-4 mt-3 shadow-lg">
       {sortedExpenses.map(exp => {
         return noRepeatingDates.map(date => {
           if (exp.startDate === date) {
