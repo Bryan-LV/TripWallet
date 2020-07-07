@@ -49,7 +49,7 @@ function TripData({ data, setTripEdit, setExpenseData, setExpenseItem }) {
 
       <div className="rounded-lg mx-1 mb-2 py-4 bg-gray-800 text-white flex flex-row justify-between">
         <div className="flex flex-row justify-start ml-10 font-semibold">
-          <h4 className="pr-2">Date</h4>
+          <h4 className="pr-2 underline">Date</h4>
           <h4 className="">Category</h4>
         </div>
         <div className="mr-10 font-light">
@@ -71,15 +71,15 @@ function TripData({ data, setTripEdit, setExpenseData, setExpenseItem }) {
           }
         }} />
 
-      <div className="flex flex-row justify-between items-end px-8 bg-gray-100">
-        <Link to="/tripform" onClick={() => setTripEdit({ isEdit: true, formDetails: data.getTrip })} className="inline-block my-5 rounded-full rounded-lg">
+      <div className="flex flex-row justify-between items-end px-8 bg-white rounded-lg shadow-lg">
+        <Link to="/tripform" onClick={() => setTripEdit({ isEdit: true, formDetails: data.getTrip })} className="inline-block my-5 rounded-full p-2 hover:bg-gray-200">
           <div className="w-10">
             <img className="relative trip-icons" src={pen} alt="edit trip" />
           </div>
         </Link>
         <Link to="/trip/expenseform" onClick={expenseFormRedirect} className="inline-block  my-5 rounded-full mr-1" >
           <div className="">
-            <p className="py-3 px-5 bg-red-600 text-white rounded-lg font-semibold">Add Expense</p>
+            <p className="py-3 px-5 bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold">Add Expense</p>
             {/* <img className="relative trip-icons" src={plus} alt="add expense" /> */}
           </div>
         </Link>

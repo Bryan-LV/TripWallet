@@ -136,7 +136,7 @@ function TripForm({ isTripEdit }) {
             <Field type="text" name="photo" placeholder="Photo" className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" />
           </div>
           <div className="text-center mt-4">
-            <button type="submit" className="py-3 px-6 text-lg font-medium text-white rounded-lg bg-red-600 w-3/4 md:w-1/2">Save Trip</button>
+            <button type="submit" className="py-3 px-6 text-lg font-medium text-white rounded-lg bg-red-600 hover:bg-red-700 w-3/4 md:w-1/2">Save Trip</button>
           </div>
         </Form>
       </Formik>
@@ -154,7 +154,7 @@ function TripForm({ isTripEdit }) {
         <div className="mt-4">
           <button
             onClick={() => deleteTrip({ variables: { tripID: isTripEdit.formDetails._id } })}
-            className="block m-auto py-3 px-6 text-lg font-medium rounded-lg text-white bg-gray-800 w-3/4 md:w-1/2">
+            className="block m-auto py-3 px-6 text-lg font-medium rounded-lg text-white bg-gray-800 hover:bg-gray-700 w-3/4 md:w-1/2">
             Delete Trip
           </button>
         </div>

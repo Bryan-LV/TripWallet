@@ -13,7 +13,6 @@ function ProgressBar({ totalSpent, budget }) {
 
   const percentage = calcPercentage();
   const progressBarColor = percentage < 34 ? 'bg-green-400' : percentage < 81 ? 'bg-yellow-400' : 'bg-red-700';
-  console.log(progressBarColor);
 
   return (
     <div className="h-1 bg-black w-5/6 m-auto relative mt-8 rounded-lg">
