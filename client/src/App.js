@@ -27,7 +27,6 @@ function App() {
 
   useEffect(() => {
     const persistUser = async () => {
-      console.log('persist user use effect hook on App.js');
       if (user === null) {
         // check is not expired, if not validate token on server
         const isValid = await checkToken()

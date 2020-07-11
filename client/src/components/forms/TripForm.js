@@ -33,8 +33,8 @@ const editVals = (formDetails) => {
 }
 
 const validation = yup.object({
-  tripName: yup.string().min(3).required('A trip name is required'),
-  foreignCurrency: yup.string().min(3).max(3).required('A foreign currency is required'),
+  tripName: yup.string().min(3).required('a trip name is required'),
+  foreignCurrency: yup.string().min(3).max(3).required('a foreign currency is required'),
   baseCurrency: yup.string().min(3).max(3)
 })
 
@@ -143,11 +143,6 @@ function TripForm({ isTripEdit }) {
       {isTripEdit.isEdit && (
         <div className="w-8 cursor-pointer pt-2 m-auto" onClick={() => setDeleteSwitch(!deleteSwitch)}>
           <img src={lockIcon} alt="unlock delete button" />
-          {/* <button
-            onClick={() => setDeleteSwitch(!deleteSwitch)}
-            className="py-3 px-6 text-lg font-medium rounded-lg bg-yellow-400 w-3/4 md:w-1/2" >
-            Enable Delete Button
-          </button> */}
         </div>
       )}
       {deleteSwitch && isTripEdit.isEdit && (

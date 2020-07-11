@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import DatePickerField from './DatePickerField'
@@ -46,17 +47,19 @@ const initFormValues = (tripID, expenseEditData) => {
 
 const validation = yup.object({
   tripID: yup.string(),
-  category: yup.string().trim().required(),
-  expenseName: yup.string().trim().required(),
-  foreignPrice: yup.number().required(),
+  category: yup.string().trim().required('category is required'),
+  expenseName: yup.string().trim().required('expense name is required'),
+  foreignPrice: yup.number().required('price is required'),
   baseCurrencyPrice: yup.number(),
   spread: yup.number(),
-  startDate: yup.string().required(),
+  startDate: yup.string().required('a date is required'),
   endDate: yup.string(),
   notes: yup.string()
 })
 
-function ExpenseForm({ expenseData: { tripID, currencies, categories, isExpenseEdit, expenseEditData } }) {
+function ExpenseForm({ expenseData }) {
+  const tripID = expenseData ? expenseData.tripID : JSON.parse(localStorage.getItem('tripID'));
+  const { currencies, categories, isExpenseEdit, expenseEditData } = expenseData || null;
   const [conversionPrice, setConversionPrice] = useState(isExpenseEdit ? expenseEditData.baseCurrencyPrice : 0);
   const [isSpread, setSpread] = useState(false); // expense spread over mult. days
   const [exchangeRate, setExchangeRate] = useState(null);
@@ -66,12 +69,14 @@ function ExpenseForm({ expenseData: { tripID, currencies, categories, isExpenseE
     onError: err => console.log(err),
     // onCompleted: data => history.push('/trip'),
     update: (cache, { data }) => {
-      const cachedTrip = cache.readQuery({ query: FETCH_TRIP });
+      const cachedTrip = cache.readQuery({ query: FETCH_TRIP, variables: { id: tripID } });
       console.log(cachedTrip);
-      // cache.writeQuery({
-      //   query: FETCH_TRIP,
-      //   data: { getTrip: { ...cachedTrip.getTrip, expenses: cachedTrip.getTrip.expenses.push(data.createExpense) } }
-      // })
+
+      cache.writeQuery({
+        query: FETCH_TRIP,
+        variables: { id: tripID },
+        data: { getTrip: { ...cachedTrip.getTrip, expenses: [...cachedTrip.getTrip.expenses, data.createExpense] } }
+      })
     }
   })
 
@@ -192,12 +197,12 @@ function ExpenseForm({ expenseData: { tripID, currencies, categories, isExpenseE
             <p>{currencies.baseCurrency}</p>
             <p className="mx-10">{conversionPrice}</p>
           </div>
-          <ErrorMessage name="foreignPrice" className="py-2 text-red-700">{(errorMsg) => <p className="mx-10 text-red-700">{errorMsg}</p>}</ErrorMessage>
+          <ErrorMessage name="foreignPrice" className="">{(errorMsg) => <p className="px-2 text-red-700">{errorMsg}</p>}</ErrorMessage>
 
           <div className="flex items-center border-b border-b-2 border-gray-900 py-2">
             <Field type="text" name="expenseName" placeholder="Expense name" className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" />
           </div>
-          <ErrorMessage name="expenseName" className="py-2 text-red-700">{(errorMsg) => <p className="mx-10 text-red-700">{errorMsg}</p>}</ErrorMessage>
+          <ErrorMessage name="expenseName" className="">{(errorMsg) => <p className="px-2 text-red-700">{errorMsg}</p>}</ErrorMessage>
 
           <div className="flex items-center border-b border-b-2 border-gray-900 py-2">
             <Field type="text" name="category" placeholder="Category" list="category" className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" />
@@ -205,20 +210,20 @@ function ExpenseForm({ expenseData: { tripID, currencies, categories, isExpenseE
               {categories ? (categories.map(category => <option key={category} value={category}>{category}</option>)) : <> <option value="Food">Food</option> <option value="Accommodation">Accommodation</option> </>}
             </datalist>
           </div>
-          <ErrorMessage name="category" className="py-2 text-red-700">{(errorMsg) => <p className="mx-10 text-red-700">{errorMsg}</p>}</ErrorMessage>
+          <ErrorMessage name="category" className="">{(errorMsg) => <p className="px-2 text-red-700">{errorMsg}</p>}</ErrorMessage>
 
           <div className="flex items-center border-b border-b-2 border-gray-900 py-2">
             <label htmlFor="startDate" className="text-md px-2 text-gray-500">Date</label>
             <DatePickerField name="startDate" className="bg-transparent" />
           </div>
-          <ErrorMessage name="startDate" className="py-2 text-red-700">{(errorMsg) => <p className="mx-10 text-red-700">{errorMsg}</p>}</ErrorMessage>
+          <ErrorMessage name="startDate" className="">{(errorMsg) => <p className="px-2 text-red-700">{errorMsg}</p>}</ErrorMessage>
 
           {isSpread ? (
             <div className="flex items-center border-b border-b-2 border-gray-900 py-2 mt-4">
               <label htmlFor="endDate" className="text-md px-2 text-gray-700">End Date</label>
               <DatePickerField name="endDate" className="bg-transparent" />
             </div>) : null}
-          <ErrorMessage name="endDate" className="py-2 text-red-700">{(errorMsg) => <p className="mx-10 text-red-700">{errorMsg}</p>}</ErrorMessage>
+          <ErrorMessage name="endDate" className="">{(errorMsg) => <p className="px-2 text-red-700">{errorMsg}</p>}</ErrorMessage>
 
           <div className="text-right">
             <p className="px-4 py-2 my-3 border-solid border border-gray-800 rounded-lg inline-block text-right cursor-pointer" onClick={() => setSpread(!isSpread)}>Spread</p>
@@ -227,7 +232,7 @@ function ExpenseForm({ expenseData: { tripID, currencies, categories, isExpenseE
           <div className="flex items-center border-b border-b-2 border-gray-900 py-2">
             <Field type="text" name="notes" placeholder="Notes" className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" />
           </div>
-          <ErrorMessage name="notes" className="py-2 text-red-700">{(errorMsg) => <p className="mx-10 text-red-700">{errorMsg}</p>}</ErrorMessage>
+          <ErrorMessage name="notes" className="">{(errorMsg) => <p className="px-2 text-red-700">{errorMsg}</p>}</ErrorMessage>
 
           <div className="text-center mt-4">
             <button className="py-3 px-6 text-lg font-medium rounded-lg text-white bg-red-600 hover:bg-red-700 w-3/4 md:w-1/2" type="submit">{isExpenseEdit ? 'Save Edit' : 'Add Expense'}</button>
@@ -236,6 +241,10 @@ function ExpenseForm({ expenseData: { tripID, currencies, categories, isExpenseE
       </Formik>
     </div>
   )
+}
+
+ExpenseForm.propTypes = {
+  expenseData: PropTypes.object.isRequired
 }
 
 export default ExpenseForm

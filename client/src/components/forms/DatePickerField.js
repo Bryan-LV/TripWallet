@@ -5,7 +5,7 @@ import DatePicker from "react-datepicker";
 const DatePickerField = ({ ...props }) => {
   const { setFieldValue } = useFormikContext();
   const [field] = useField(props);
-  console.log('date picker render');
+
   return (
     <DatePicker
       {...field}
