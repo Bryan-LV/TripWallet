@@ -1,11 +1,14 @@
 import React, { useState } from 'react'
 import { useMutation } from '@apollo/client';
 import { DELETE_EXPENSE } from '../../queries/expenses'
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { createDMYDate } from '../../utils/Dates'
 import lockIcon from '../../assets/media/lock.svg'
 
+import { FETCH_TRIP } from '../../queries/trips'
+
 function ExpenseItem({ data, setExpenseData }) {
+  const history = useHistory();
   if (data) localStorage.setItem('expenseItem', JSON.stringify(data.exp));
   const expenseItem = data ? data.exp : JSON.parse(localStorage.getItem('expenseItem'));
   const { baseCurrency, foreignCurrency } = JSON.parse(localStorage.getItem('tripCurrencies'));
@@ -13,15 +16,24 @@ function ExpenseItem({ data, setExpenseData }) {
   const [unlockDelete, setDelete] = useState(false);
   const [deleteExpense] = useMutation(DELETE_EXPENSE, {
     onError: (err) => console.log(err),
-    onCompleted: (data) => console.log(data)
+    update: (cache, { data }) => {
+      const cachedTrip = cache.readQuery({ query: FETCH_TRIP, variables: { id: expenseItem.tripID } });
+      const filterExpenses = cachedTrip.getTrip.expenses.filter(exp => exp._id !== expenseItem._id)
+      cache.writeQuery({
+        query: FETCH_TRIP,
+        variables: { id: expenseItem.tripID },
+        data: { getTrip: { ...cachedTrip.getTrip, expenses: filterExpenses } }
+      })
+    },
+    onCompleted: () => history.push('/trip')
   })
 
   const handleDelete = () => {
-    deleteExpense({ variables: { expenseID: data.exp._id } });
+    deleteExpense({ variables: { expenseID: expenseItem._id } });
   }
 
   const handleEditExpenseRedirect = () => {
-    const expenseData = { ...data.expenseEditData, expenseEditData: data.exp, isExpenseEdit: true }
+    const expenseData = { ...data.expenseEditData, expenseEditData: expenseItem, isExpenseEdit: true }
     setExpenseData(expenseData)
   }
 

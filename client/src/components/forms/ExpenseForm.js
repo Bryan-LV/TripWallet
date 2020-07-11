@@ -70,8 +70,6 @@ function ExpenseForm({ expenseData }) {
     // onCompleted: data => history.push('/trip'),
     update: (cache, { data }) => {
       const cachedTrip = cache.readQuery({ query: FETCH_TRIP, variables: { id: tripID } });
-      console.log(cachedTrip);
-
       cache.writeQuery({
         query: FETCH_TRIP,
         variables: { id: tripID },

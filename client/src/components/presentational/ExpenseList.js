@@ -36,7 +36,7 @@ function ExpenseList({ expenses, setExpenseItem, expenseEditData }) {
   return (
     <div className="rounded-lg bg-white max-w-md m-auto mb-4 mt-3 shadow-lg">
       {groupExpenses.map(({ date, expenses }) => {
-        return (<div>
+        return (<div key={date}>
           <h5 className="px-10 py-2">{date}</h5>
           {expenses.map(exp => {
             return (<Link to="/trip/expense" onClick={() => setExpenseItem({ exp, expenseEditData })} key={exp._id}  >
