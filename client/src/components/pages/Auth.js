@@ -96,14 +96,14 @@ const Register = ({ auth }) => {
         name: '',
         username: '',
         email: '',
-        baseCurrency: '',
+        baseCurrency: 'EUR',
         password: '',
         confirmPassword: ''
       }}
       validationSchema={registerSchemaValidation}
       onSubmit={handleRegister}>
 
-      <Form onSubmit={handleRegister}>
+      <Form>
         <h3 className="mx-10 text-2xl mb-2 text-gray-900">Create An Account</h3>
         <div className="flex items-center border-b border-b-2 border-gray-900 py-2 mx-10">
           <Field type="text" name="name" placeholder="Name" className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" />

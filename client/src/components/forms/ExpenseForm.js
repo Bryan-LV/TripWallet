@@ -154,7 +154,6 @@ function ExpenseForm({ expenseData }) {
     }
 
     if (isExpenseEdit) {
-      console.log('edit expense submitted');
       // build expense edit object
       // expenseID, tripID, category, expenseName, foreignPrice, baseCurrencyPrice, spread, endDate, notes
       const expenseEdit = {
@@ -172,7 +171,6 @@ function ExpenseForm({ expenseData }) {
       updateExpense({ variables: expenseEdit });
 
     } else {
-      console.log('add expense submitted');
       addExpense({ variables: formData })
     }
     history.push('/trip');

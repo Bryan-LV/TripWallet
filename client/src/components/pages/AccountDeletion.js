@@ -1,8 +1,19 @@
 import React, { useState } from 'react'
+import { useMutation } from '@apollo/client';
 import { Link } from 'react-router-dom';
 
-function AccountDeletion(props) {
+import { DELETE_USER } from '../../queries/user'
+
+function AccountDeletion({ user }) {
   const [promptAnswer, setPromptAnswer] = useState(false);
+  const [deleteUser] = useMutation(DELETE_USER);
+
+  const handleDelete = () => {
+    if (promptAnswer) {
+      deleteUser({ variables: { id: user._id } })
+    }
+  }
+
   return (
     <div className="max-w-md m-auto rounded-lg shadow-2xl px-6 pb-4">
       <h3 className="text-2xl font-semibold pt-4">Account Deletion</h3>
@@ -13,7 +24,7 @@ function AccountDeletion(props) {
           <Link to="/"><button className="py-2 px-4 bg-gray-600 text-white font-semibold">No</button></Link>
           <button onClick={() => setPromptAnswer(true)} className="py-2 px-4 bg-red-600 text-white font-semibold">Yes</button>
         </div>
-        {promptAnswer && <button className="w-full py-2 px-4 bg-red-600 text-white font-semibold">Delete My Account</button>}
+        {promptAnswer && <button onClick={handleDelete} className="w-full py-2 px-4 bg-red-600 text-white font-semibold">Delete My Account</button>}
       </div>
 
     </div>

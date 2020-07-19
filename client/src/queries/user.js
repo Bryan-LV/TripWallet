@@ -18,7 +18,6 @@ const REGISTER_USER = gql`
       username
       token
       baseCurrency
-      trips
     }
   }
 `
@@ -42,7 +41,15 @@ const FETCH_USER = gql`
     createdAt
   }
 }
-
 `
 
-export { LOGIN_USER, CHECK_AUTH_TOKEN, REGISTER_USER, FETCH_USER }
+const DELETE_USER = gql`
+  mutation DeleteUser($id: ID!){
+    deleteUser(id:$id){
+      message
+      isValid
+    }
+  }
+`
+
+export { LOGIN_USER, CHECK_AUTH_TOKEN, REGISTER_USER, FETCH_USER, DELETE_USER }

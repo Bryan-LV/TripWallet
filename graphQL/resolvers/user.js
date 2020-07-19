@@ -39,6 +39,7 @@ const userQueries = {
 const userResolvers = {
   ///////////////////// Register User /////////////////////
   register: async (_, { registerUser }) => {
+    console.log('register user hit');
     const { username, email, name, baseCurrency, password, confirmPassword } = registerUser;
     try {
       // validate user inputs
@@ -121,7 +122,7 @@ const userResolvers = {
       await Expense.deleteMany({ tripID: trip._id });
       await trip.remove()
       await user.remove()
-      return { message: 'User has been successfully deleted' }
+      return { message: 'User has been successfully deleted', isValid: true }
     } catch (error) {
       throw new ApolloError(error)
     }
