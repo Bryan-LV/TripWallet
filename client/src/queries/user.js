@@ -31,4 +31,18 @@ const CHECK_AUTH_TOKEN = gql`
   }
 `
 
-export { LOGIN_USER, CHECK_AUTH_TOKEN, REGISTER_USER }
+const FETCH_USER = gql`
+  query FetchUser ($id: ID!){
+   user(id: $id) { 
+		_id
+    username
+    name
+    email
+    baseCurrency
+    createdAt
+  }
+}
+
+`
+
+export { LOGIN_USER, CHECK_AUTH_TOKEN, REGISTER_USER, FETCH_USER }

@@ -47,7 +47,7 @@ function TripData({ data, setTripEdit, setExpenseData, setExpenseItem }) {
         </div>
       </div>
 
-      <div className="rounded-lg mx-1 mb-2 py-4 bg-gray-800 text-white flex flex-row justify-between">
+      <div className="rounded-lg mb-2 py-4 max-w-md m-auto bg-gray-800 text-white flex flex-row justify-between">
         <div className="flex flex-row justify-start ml-10 font-semibold">
           <h4 className="pr-2 underline">Date</h4>
           <h4 className="">Category</h4>

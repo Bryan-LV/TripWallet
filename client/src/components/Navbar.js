@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import hamIcon from '../assets/media/open-menu.png'
 import plane from '../assets/media/mail.svg'
 
-function Navbar() {
+function Navbar({ setSidebar }) {
   return (
     <div className="flex flex-row justify-between items-center px-8 py-4">
       <h1 className="text-2xl font-light flex flex-row items-center">
@@ -12,7 +12,7 @@ function Navbar() {
         </div>
         <Link to="/">tripwallet</Link>
       </h1>
-      <div className="ham-icon bg-gray-800 rounded-full p-2 cursor-pointer">
+      <div className="ham-icon bg-gray-800 rounded-full p-2 cursor-pointer" onClick={setSidebar}>
         <img className="h-8 w-9" src={hamIcon} alt="toggle menu" />
       </div>
     </div>

@@ -37,7 +37,6 @@ function ExpenseItem({ data, setExpenseData }) {
     setExpenseData(expenseData)
   }
 
-  // TODO: back to trip button
   return (
     <div>
       <div className="px-8 rounded-lg bg-white max-w-sm m-auto mb-4 mt-3 shadow-lg">
@@ -74,7 +73,7 @@ function ExpenseItem({ data, setExpenseData }) {
           <Link to="/trip/expenseform" className="hover:underline py-1 px-2" onClick={handleEditExpenseRedirect}>Edit Expense</Link>
         </div>
       </div>
-      <Link className="mx-10 mt-4 block px-6 py-3 rounded-lg bg-gray-800 text-white " to="/trip">Back To Trip</Link>
+      <Link className="m-auto max-w-sm mt-4 block px-6 py-3 rounded-lg bg-gray-800 text-white " to="/trip">Back To Trip</Link>
     </div>
   )
 }

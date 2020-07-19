@@ -51,7 +51,8 @@ function TripForm({ isTripEdit }) {
         query: FETCH_TRIPS,
         data: { getTrips: [...cachedTrips.getTrips, newTrip] }
       })
-    }
+    },
+    onCompleted: () => history.push('/')
   });
   const [updateTrip] = useMutation(UPDATE_TRIP, {
     onError: (err) => console.log(err),
@@ -62,7 +63,8 @@ function TripForm({ isTripEdit }) {
         query: FETCH_TRIPS,
         data: { getTrips: [...cachedTrips.getTrips, newTrip] }
       })
-    }
+    },
+    onCompleted: () => history.push('/trip')
   });
   const [deleteTrip] = useMutation(DELETE_TRIP, {
     onError: (err) => console.log(err),
@@ -74,7 +76,8 @@ function TripForm({ isTripEdit }) {
         query: FETCH_TRIPS,
         data: { getTrips: filterTrips }
       })
-    }
+    },
+    onCompleted: () => history.push('/')
   });
 
   const handleSubmit = (values) => {
@@ -101,9 +104,9 @@ function TripForm({ isTripEdit }) {
   }
 
   return (
-    <div>
+    <div className="max-w-lg m-auto rounded-lg shadow-2xl py-8">
       <div>
-        <h2 className="text-lg font-medium mx-10">{isTripEdit.isEdit ? `Edit ${isTripEdit.formDetails.tripName} Trip` : 'Add Trip'}</h2>
+        <h2 className="text-lg font-medium mx-10 mb-4">{isTripEdit.isEdit ? `Edit ${isTripEdit.formDetails.tripName} Trip` : 'Add Trip'}</h2>
       </div>
       <Formik
         initialValues={isTripEdit.isEdit ? editVals(isTripEdit.formDetails) : initVals}

@@ -57,9 +57,18 @@ const validation = yup.object({
   notes: yup.string()
 })
 
+const getCurrenciesFromLS = () => {
+  const tripCurrencies = localStorage.getItem('tripCurrencies') ? JSON.parse(localStorage.getItem('tripCurrencies')) : null;
+  return tripCurrencies
+}
+
+
 function ExpenseForm({ expenseData }) {
   const tripID = expenseData ? expenseData.tripID : JSON.parse(localStorage.getItem('tripID'));
-  const { currencies, categories, isExpenseEdit, expenseEditData } = expenseData || null;
+  const currencies = expenseData ? expenseData.currencies : getCurrenciesFromLS();
+  const categories = expenseData ? expenseData.categories : ['Food', 'Accommodation'];
+  const isExpenseEdit = expenseData ? expenseData.isExpenseEdit : false;
+  const expenseEditData = expenseData ? expenseData.expenseEditData : null;
   const [conversionPrice, setConversionPrice] = useState(isExpenseEdit ? expenseEditData.baseCurrencyPrice : 0);
   const [isSpread, setSpread] = useState(false); // expense spread over mult. days
   const [exchangeRate, setExchangeRate] = useState(null);
@@ -67,19 +76,18 @@ function ExpenseForm({ expenseData }) {
   // Mutations
   const [addExpense] = useMutation(CREATE_EXPENSE, {
     onError: err => console.log(err),
-    // onCompleted: data => history.push('/trip'),
-    update: (cache, { data }) => {
-      const cachedTrip = cache.readQuery({ query: FETCH_TRIP, variables: { id: tripID } });
-      cache.writeQuery({
-        query: FETCH_TRIP,
-        variables: { id: tripID },
-        data: { getTrip: { ...cachedTrip.getTrip, expenses: [...cachedTrip.getTrip.expenses, data.createExpense] } }
-      })
-    }
+    // update: (cache, { data }) => {
+    //   const cachedTrip = cache.readQuery({ query: FETCH_TRIP, variables: { id: tripID } });
+    //   cache.writeQuery({
+    //     query: FETCH_TRIP,
+    //     variables: { id: tripID },
+    //     data: { getTrip: { ...cachedTrip.getTrip, expenses: [...cachedTrip.getTrip.expenses, data.createExpense] } }
+    //   })
+    // }
   })
 
   const [updateExpense] = useMutation(UPDATE_EXPENSE, {
-    onError: (err) => console.log(err)
+    onError: (err) => console.log(err),
   })
 
   const fetchExchangeRate = async () => {
@@ -146,6 +154,7 @@ function ExpenseForm({ expenseData }) {
     }
 
     if (isExpenseEdit) {
+      console.log('edit expense submitted');
       // build expense edit object
       // expenseID, tripID, category, expenseName, foreignPrice, baseCurrencyPrice, spread, endDate, notes
       const expenseEdit = {
@@ -163,6 +172,7 @@ function ExpenseForm({ expenseData }) {
       updateExpense({ variables: expenseEdit });
 
     } else {
+      console.log('add expense submitted');
       addExpense({ variables: formData })
     }
     history.push('/trip');
@@ -181,13 +191,13 @@ function ExpenseForm({ expenseData }) {
   }
 
   return (
-    <div className="px-8">
-      <h3 className="py-4 ">{isExpenseEdit ? 'Edit Expense' : 'Add Expense'}</h3>
+    <div className="rounded-lg shadow-2xl m-auto p-8 max-w-lg">
+      <h2 className="text-lg font-medium">{isExpenseEdit ? 'Edit Expense' : 'Add Expense'}</h2>
       <Formik
         initialValues={initFormValues(tripID, expenseEditData)}
         validationSchema={validation}
         onSubmit={handleSubmit}>
-        <Form className="w-full max-w-sm">
+        <Form className="w-full">
 
           <div className="flex items-center border-b border-b-2 border-gray-900 py-2">
             <label htmlFor="foreignPrice" className="pl-2">{currencies.foreignCurrency}</label>
