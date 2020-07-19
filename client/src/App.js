@@ -43,7 +43,7 @@ function App() {
 
   return (
     <div className="App relative max-w-screen-xl m-auto">
-      <Navbar setSidebar={setSidebar} />
+      <Navbar setSidebar={setSidebar} showMenu={user ? true : false} />
       {openSidebar ? <Sidebar user={user} auth={auth} setSidebar={setSidebar} /> : null}
       <Switch>
         <Route exact path="/" render={() => <Dashboard user={user} auth={auth} setTrip={setTrip} setTripEdit={setTripEdit} />} />
@@ -54,7 +54,7 @@ function App() {
         <Route exact path="/login" render={() => <Auth auth={auth} user={user} />} />
         <Route exact path="/register" render={() => <Auth auth={auth} user={user} />} />
         <Route exact path="/user" render={() => <UserSettings user={user} />} />
-        <Route exact path="/user/accountdeletion" render={() => <AccountDeletion user={user} />} />
+        <Route exact path="/user/accountdeletion" render={() => <AccountDeletion user={user} auth={auth} />} />
       </Switch>
     </div >
   );

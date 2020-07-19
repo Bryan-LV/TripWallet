@@ -1,16 +1,21 @@
 import React, { useState } from 'react'
 import { useMutation } from '@apollo/client';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import { DELETE_USER } from '../../queries/user'
 
-function AccountDeletion({ user }) {
+function AccountDeletion({ user, auth }) {
+  const history = useHistory();
   const [promptAnswer, setPromptAnswer] = useState(false);
-  const [deleteUser] = useMutation(DELETE_USER);
+  const [deleteUser] = useMutation(DELETE_USER, {
+    onCompleted: _ => history.push('/login'),
+    onError: err => console.log(err)
+  });
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (promptAnswer) {
-      deleteUser({ variables: { id: user._id } })
+      await deleteUser({ variables: { id: user._id } })
+      auth.logout()
     }
   }
 
