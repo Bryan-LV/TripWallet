@@ -98,12 +98,13 @@ const userResolvers = {
   }
   ,
   ///////////////////// Update User /////////////////////
-  updateUser: async (_, { updateUser }) => {
-    // check if user is authenticated
-    let user = checkAuth(context);
+  updateUser: async (_, { updateUser }, context) => {
     try {
-      // TODO: Add update user logic
-      return User.findOne({ email: updateUser.email });
+      // check if user is authenticated
+      checkAuth(context);
+      let user = await User.findByIdAndUpdate(updateUser.id, { $set: updateUser }, { new: true });
+      if (!user) throw new ApolloError('User not found');
+      return user;
     } catch (error) {
       console.log(error);
       throw new ApolloError(error)

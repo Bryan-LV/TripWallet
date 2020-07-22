@@ -83,8 +83,9 @@ module.exports = gql`
   }
 
   input UpdateInput {
+    id: ID!
     name: String
-    username:String
+    username: String
     email: String
     baseCurrency: String
     currentPassword: String 

@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom'
 import { useLazyQuery } from '@apollo/client'
 
 import { Auth, Dashboard, Trip, ExpenseItem, UserSettings, AccountDeletion } from './components/pages'
-import { TripForm, ExpenseForm } from './components/forms'
+import { TripForm, ExpenseForm, UserSettingsForm } from './components/forms'
 import { AuthContext } from './context/auth/AuthContext'
 import { CHECK_AUTH_TOKEN } from './queries/user'
 import checkToken from './utils/checkToken'
@@ -54,6 +54,7 @@ function App() {
         <Route exact path="/login" render={() => <Auth auth={auth} user={user} />} />
         <Route exact path="/register" render={() => <Auth auth={auth} user={user} />} />
         <Route exact path="/user" render={() => <UserSettings user={user} />} />
+        <Route exact path="/user/edit" render={() => <UserSettingsForm user={user} />} />
         <Route exact path="/user/accountdeletion" render={() => <AccountDeletion user={user} auth={auth} />} />
       </Switch>
     </div >

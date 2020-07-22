@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { useLazyQuery } from '@apollo/client'
+import { Link } from 'react-router-dom'
 
 import lock from '../../assets/media/lock.svg'
 import { FETCH_USER } from '../../queries/user'
-import { Link } from 'react-router-dom';
 
 function UserSettings({ user }) {
   const [fetchUser, { loading, data }] = useLazyQuery(FETCH_USER);
@@ -26,11 +26,14 @@ function UserSettings({ user }) {
 
   return (
     <div className="max-w-md m-auto rounded-lg shadow-2xl px-6 pb-4">
-      <h2 className="text-xl font-bold py-4">User Settings</h2>
-      <div className="w-2/3">
-        <div className="flex flex-row justify-between">
+      <div className="flex flex-row justify-between items-baseline">
+        <h2 className="text-xl font-bold py-4">User Settings</h2>
+        <Link to="/user/edit"><h4 className="underline">Edit Info</h4></Link>
+      </div>
+      <div className="w-full">
+        <div className="flex flex-row justify-between hover:bg-gray-300">
           <p className="text-xl">Username</p>
-          <p className="text-xl py-1 px-4 bg-gray-200 rounded-md">{data && data.user.username}</p>
+          <p className="text-xl py-1 px-4 bg-gray-200 rounded-md mr-2">{data && data.user.username}</p>
         </div>
         <div className="flex flex-row justify-between py-4">
           <p className="text-xl">Email</p>

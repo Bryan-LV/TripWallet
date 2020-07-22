@@ -52,4 +52,12 @@ const DELETE_USER = gql`
   }
 `
 
-export { LOGIN_USER, CHECK_AUTH_TOKEN, REGISTER_USER, FETCH_USER, DELETE_USER }
+const UPDATE_USER = gql`
+  mutation UpdateUser($id: ID!, $name: String, $username: String, $email: String, $baseCurrency: String, $currentPassword: String, $newPassword: String, $confirmNewPassword: String){
+    updateUser( updateUser: {id: $id, name: $name, username: $username, email: $email, baseCurrency: $baseCurrency, currentPassword: $currentPassword, newPassword: $newPassword, confirmNewPassword: $confirmNewPassword}){
+      _id
+    }
+  }
+`
+
+export { LOGIN_USER, CHECK_AUTH_TOKEN, REGISTER_USER, FETCH_USER, DELETE_USER, UPDATE_USER }
