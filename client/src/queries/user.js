@@ -56,6 +56,11 @@ const UPDATE_USER = gql`
   mutation UpdateUser($id: ID!, $name: String, $username: String, $email: String, $baseCurrency: String, $currentPassword: String, $newPassword: String, $confirmNewPassword: String){
     updateUser( updateUser: {id: $id, name: $name, username: $username, email: $email, baseCurrency: $baseCurrency, currentPassword: $currentPassword, newPassword: $newPassword, confirmNewPassword: $confirmNewPassword}){
       _id
+      username
+      name
+      email
+      baseCurrency
+      createdAt
     }
   }
 `
