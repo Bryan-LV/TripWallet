@@ -33,7 +33,7 @@ function TripData({ data, setTripEdit, setExpenseData, setExpenseItem }) {
     }, 0);
     return total.value;
   }
-
+  console.log(data);
 
   return (
     <div className="">

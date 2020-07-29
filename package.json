@@ -21,7 +21,8 @@
     "formik": "^2.1.4",
     "graphql": "^15.0.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.9.15"
+    "mongoose": "^5.9.15",
+    "pexels": "^1.0.1"
   },
   "devDependencies": {
     "concurrently": "^5.2.0",

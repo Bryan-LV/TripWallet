@@ -40,6 +40,28 @@ module.exports = gql`
     notes: String
   }
 
+  type Photo {
+    id: Int
+    width: Int
+    height: Int
+    url: String
+    photographer: String
+    photographer_url: String
+    photographer_id: Int
+    src: PhotoSources
+  }
+
+  type PhotoSources {
+    original: String
+    large2x: String
+    large: String
+    medium: String
+    small: String
+    portrait: String
+    landscape: String
+    tiny: String
+  }
+
   type Response {
     message: String!
     isValid: Boolean
@@ -53,6 +75,7 @@ module.exports = gql`
     ######### Delete getalltrips in production ###############
     getAllTrips: [Trip]
     checkAuth: Response!
+    getPhotos(query: String!): [Photo]
   }
 
   type Mutation {

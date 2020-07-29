@@ -1,4 +1,6 @@
 const { AuthenticationError, ApolloError } = require('apollo-server');
+const { createClient } = require('pexels');
+require('dotenv').config();
 
 const checkAuth = require('../../utils/checkAuth');
 const Trip = require('../../models/trip.model');
@@ -35,6 +37,22 @@ const tripQueries = {
       let trips = await Trip.find();
       return trips
     } catch (error) {
+      throw new ApolloError(error);
+    }
+  },
+  getPhotos: async (parent, args, context) => {
+    try {
+      checkAuth(context);
+      const client = createClient(process.env.PEXELSKEY);
+
+      const query = args.query;
+
+      const req = await client.photos.search({ query, per_page: 10 })
+      const res = req.photos;
+      return res;
+
+    } catch (error) {
+      console.log(error);
       throw new ApolloError(error);
     }
   }

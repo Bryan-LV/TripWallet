@@ -10,6 +10,7 @@ const FETCH_TRIPS = gql`
       foreignCurrency
       baseCurrency
       totalSpent
+      photo
     }
   }
 `
@@ -26,6 +27,7 @@ const FETCH_TRIP = gql`
       startDate
       endDate
       categories
+      photo
       
       expenses{
         _id
@@ -92,4 +94,17 @@ const DELETE_TRIP = gql`
   }
 `
 
-export { FETCH_TRIPS, FETCH_TRIP, CREATE_TRIP, UPDATE_TRIP, DELETE_TRIP }
+const SEARCH_PHOTOS = gql`
+  query ($query: String!) {
+    getPhotos(query: $query){
+      url
+      width
+      id
+      src {
+        small
+      }
+    }
+  }
+`
+
+export { FETCH_TRIPS, FETCH_TRIP, CREATE_TRIP, UPDATE_TRIP, DELETE_TRIP, SEARCH_PHOTOS }

@@ -6,6 +6,7 @@ import * as yup from 'yup';
 
 import currencyCodes from '../../utils/currencyCodes'
 import { CREATE_TRIP, UPDATE_TRIP, DELETE_TRIP, FETCH_TRIPS } from '../../queries/trips'
+import PhotoSearchResults from '../presentational/PhotoSearchResults'
 import DatePickerField from './DatePickerField';
 import lockIcon from '../../assets/media/lock.svg'
 import "react-datepicker/dist/react-datepicker.css";
@@ -41,6 +42,11 @@ const validation = yup.object({
 function TripForm({ isTripEdit }) {
   const history = useHistory();
   const [deleteSwitch, setDeleteSwitch] = useState(false);
+  const [searchPhoto, setSearchPhoto] = useState('');
+  const [searchProp, setSearchProp] = useState('');
+  const [selectedPhoto, setSelectedPhoto] = useState('');
+  const [openPhotoModal, setPhotoModal] = useState(false);
+
   // Mutations 
   const [createTrip] = useMutation(CREATE_TRIP, {
     onError: (err) => console.log(err),
@@ -81,6 +87,9 @@ function TripForm({ isTripEdit }) {
   });
 
   const handleSubmit = (values) => {
+    if (values.photo === '') {
+      values.photo = selectedPhoto;
+    }
     if (isTripEdit.isEdit) {
       updateTrip({ variables: values })
     }
@@ -103,8 +112,16 @@ function TripForm({ isTripEdit }) {
     }
   }
 
+  const closePhotoModal = () => setPhotoModal(false);
+
+  const searchPexels = () => {
+    if (searchPhoto === '') return null;
+    setPhotoModal(true);
+    setSearchProp(searchPhoto);
+  }
+
   return (
-    <div className="max-w-lg m-auto rounded-lg shadow-2xl py-8">
+    <div className="max-w-lg m-auto rounded-lg shadow-2xl py-8 relative">
       <div>
         <h2 className="text-lg font-medium mx-10 mb-4">{isTripEdit.isEdit ? `Edit ${isTripEdit.formDetails.tripName} Trip` : 'Add Trip'}</h2>
       </div>
@@ -136,10 +153,12 @@ function TripForm({ isTripEdit }) {
             <DatePickerField name="endDate" className="bg-transparent" />
           </div>
           <div className="flex items-center border-b border-b-2 border-gray-900 py-2 mx-10">
-            <Field type="text" name="photo" placeholder="Photo" className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" />
+            <input type="text" name="photo" value={searchPhoto} onChange={(e) => setSearchPhoto(e.target.value)} placeholder="Photo" className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" />
+            <p className="py-3 text-sm w-full text-center bg-gray-700 text-white rounded-lg cursor-pointer" onClick={searchPexels}>Search Photos</p>
+            {openPhotoModal && <PhotoSearchResults searchProp={searchProp} closeModal={closePhotoModal} setSelectedPhoto={setSelectedPhoto} />}
           </div>
           <div className="text-center mt-4">
-            <button type="submit" className="py-3 px-6 text-lg font-medium text-white rounded-lg bg-red-600 hover:bg-red-700 w-3/4 md:w-1/2">Save Trip</button>
+            <button type="submit" className="py-2 px-6 text-lg font-medium text-white rounded-lg bg-red-600 hover:bg-red-700 w-3/4 md:w-1/2">Save Trip</button>
           </div>
         </Form>
       </Formik>
