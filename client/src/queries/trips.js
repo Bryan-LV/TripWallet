@@ -57,7 +57,8 @@ const CREATE_TRIP = gql`
       startDate
       endDate
       categories
-      
+      photo
+
       expenses{
         _id
       }
@@ -78,7 +79,8 @@ const UPDATE_TRIP = gql`
       startDate
       endDate
       categories
-      
+      photo
+
       expenses{
         _id
       }
@@ -101,7 +103,7 @@ const SEARCH_PHOTOS = gql`
       width
       id
       src {
-        small
+        medium
       }
     }
   }

@@ -87,7 +87,7 @@ function TripForm({ isTripEdit }) {
   });
 
   const handleSubmit = (values) => {
-    if (values.photo === '') {
+    if (selectedPhoto) {
       values.photo = selectedPhoto;
     }
     if (isTripEdit.isEdit) {
@@ -157,8 +157,11 @@ function TripForm({ isTripEdit }) {
             <p className="py-3 text-sm w-full text-center bg-gray-700 text-white rounded-lg cursor-pointer" onClick={searchPexels}>Search Photos</p>
             {openPhotoModal && <PhotoSearchResults searchProp={searchProp} closeModal={closePhotoModal} setSelectedPhoto={setSelectedPhoto} />}
           </div>
+          <div className="mx-10 my-4">
+            {selectedPhoto && <img src={selectedPhoto} alt="" />}
+          </div>
           <div className="text-center mt-4">
-            <button type="submit" className="py-2 px-6 text-lg font-medium text-white rounded-lg bg-red-600 hover:bg-red-700 w-3/4 md:w-1/2">Save Trip</button>
+            <button type="submit" className="py-2 px-6 text-lg font-medium text-white rounded-lg bg-red-600 hover:bg-red-700 w-3/4 md:w-1/2">{isTripEdit.isEdit ? 'Update Trip' : 'Save Trip'}</button>
           </div>
         </Form>
       </Formik>

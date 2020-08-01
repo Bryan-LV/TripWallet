@@ -126,6 +126,7 @@ const tripResolvers = {
   },
   ///////////////////// Update Trip /////////////////////
   updateTrip: async (_, { updateTrip }, context) => {
+    console.log(updateTrip);
     try {
       const { tripID, tripName, foreignCurrency, budget, startDate, endDate, photo } = updateTrip;
       // check user auth

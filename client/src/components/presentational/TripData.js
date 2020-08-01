@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import currency from 'currency.js'
 import ExpenseList from './ExpenseList'
 import ProgressBar from './ProgressBar';
-import plus from '../../assets/media/plus.svg'
 import pen from '../../assets/media/pen.svg'
 
 function TripData({ data, setTripEdit, setExpenseData, setExpenseItem }) {
@@ -33,7 +32,6 @@ function TripData({ data, setTripEdit, setExpenseData, setExpenseItem }) {
     }, 0);
     return total.value;
   }
-  console.log(data);
 
   return (
     <div className="">
@@ -71,6 +69,7 @@ function TripData({ data, setTripEdit, setExpenseData, setExpenseItem }) {
           }
         }} />
 
+
       <div className="flex flex-row justify-between items-end px-8 bg-white rounded-lg shadow-lg">
         <Link to="/tripform" onClick={() => setTripEdit({ isEdit: true, formDetails: data.getTrip })} className="inline-block my-5 rounded-full p-2 hover:bg-gray-200">
           <div className="w-10">
@@ -80,7 +79,6 @@ function TripData({ data, setTripEdit, setExpenseData, setExpenseItem }) {
         <Link to="/trip/expenseform" onClick={expenseFormRedirect} className="inline-block  my-5 rounded-full mr-1" >
           <div className="">
             <p className="py-3 px-5 bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold">Add Expense</p>
-            {/* <img className="relative trip-icons" src={plus} alt="add expense" /> */}
           </div>
         </Link>
       </div>
