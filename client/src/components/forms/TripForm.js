@@ -77,7 +77,6 @@ function TripForm({ isTripEdit }) {
     update: (cache, { data }) => {
       const cachedTrips = cache.readQuery({ query: FETCH_TRIPS });
       const filterTrips = cachedTrips.getTrips.filter(trip => trip._id !== isTripEdit.formDetails._id)
-      console.log(filterTrips);
       cache.writeQuery({
         query: FETCH_TRIPS,
         data: { getTrips: filterTrips }
@@ -97,7 +96,6 @@ function TripForm({ isTripEdit }) {
       createTrip({
         variables: values,
         update: (cache, { data }) => {
-          console.log(cache);
           const existingTrips = cache.readQuery({
             query: FETCH_TRIPS
           });
@@ -141,27 +139,27 @@ function TripForm({ isTripEdit }) {
           </div>
           <ErrorMessage name="foreignCurrency">{(errorMsg) => <p className="mx-10 text-red-700">{errorMsg}</p>}</ErrorMessage>
           <div className="flex items-center border-b border-b-2 border-gray-900 py-2 mx-10">
-            <p className="text-md pl-2">Budget</p>
+            <p className="text-md pl-2 text-gray-600">Budget</p>
             <Field type="number" name="budget" placeholder="Budget" className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" />
           </div>
           <div className="flex items-center border-b border-b-2 border-gray-900 py-2 mx-10">
-            <label htmlFor="startDate" className="text-md px-2">Start Date</label>
+            <label htmlFor="startDate" className="text-md px-2 text-gray-600">Start Date</label>
             <DatePickerField name="startDate" className="bg-transparent" />
           </div>
           <div className="flex items-center border-b border-b-2 border-gray-900 py-2 mx-10">
-            <label htmlFor="startDate" className="text-md px-2">End Date</label>
+            <label htmlFor="startDate" className="text-md px-2 text-gray-600">End Date</label>
             <DatePickerField name="endDate" className="bg-transparent" />
           </div>
-          <div className="flex items-center border-b border-b-2 border-gray-900 py-2 mx-10">
+          <div className="flex items-center border-b border-b-2 border-gray-900 pb-2 pt-8 mx-10">
             <input type="text" name="photo" value={searchPhoto} onChange={(e) => setSearchPhoto(e.target.value)} placeholder="Photo" className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" />
-            <p className="py-3 text-sm w-full text-center bg-gray-700 text-white rounded-lg cursor-pointer" onClick={searchPexels}>Search Photos</p>
+            <p className="py-3 text-sm w-2/4 text-center bg-gray-700 text-white rounded-lg cursor-pointer" onClick={searchPexels}>Search Photos</p>
             {openPhotoModal && <PhotoSearchResults searchProp={searchProp} closeModal={closePhotoModal} setSelectedPhoto={setSelectedPhoto} />}
           </div>
           <div className="mx-10 my-4">
             {selectedPhoto && <img src={selectedPhoto} alt="" />}
           </div>
           <div className="text-center mt-4">
-            <button type="submit" className="py-2 px-6 text-lg font-medium text-white rounded-lg bg-red-600 hover:bg-red-700 w-3/4 md:w-1/2">{isTripEdit.isEdit ? 'Update Trip' : 'Save Trip'}</button>
+            <button type="submit" className="py-3 px-6 text-lg font-medium text-white rounded-lg bg-red-600 hover:bg-red-700 w-3/4 md:w-1/2">{isTripEdit.isEdit ? 'Update Trip' : 'Save Trip'}</button>
           </div>
         </Form>
       </Formik>

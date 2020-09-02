@@ -22,8 +22,6 @@ const userQueries = {
       throw new ApolloError(error);
     }
   },
-  // TODO: delete query in production
-  users: () => User.find({}),
   checkAuth: (_, args, context) => {
     try {
       const isValid = checkAuth(context)

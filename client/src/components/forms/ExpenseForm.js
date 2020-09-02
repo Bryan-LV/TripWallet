@@ -101,7 +101,6 @@ function ExpenseForm({ expenseData }) {
       let rates = localStorage.getItem('rates') ? JSON.parse(localStorage.getItem('rates')) : false;
       if (!rates) {
         // if no rates, hit the api & set to local storage
-        console.log('no rates');
         fetchExchangeRate()
         return;
       }
@@ -113,7 +112,6 @@ function ExpenseForm({ expenseData }) {
         }
       }
       if (!currencyIsCorrect) {
-        console.log('currency is not correct');
         // if it does not match hit api
         fetchExchangeRate()
         return;
@@ -122,7 +120,6 @@ function ExpenseForm({ expenseData }) {
       // if it matches, then check the date, if passed one day, hit api again
       const today = createYMDDate();
       if (today !== rates.dateFetched) {
-        console.log('dates do not match');
         fetchExchangeRate();
         return;
       }

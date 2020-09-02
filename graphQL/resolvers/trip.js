@@ -31,15 +31,6 @@ const tripQueries = {
       throw new ApolloError(error);
     }
   },
-  // TODO: DELETE IN PRODUCTION
-  getAllTrips: async () => {
-    try {
-      let trips = await Trip.find();
-      return trips
-    } catch (error) {
-      throw new ApolloError(error);
-    }
-  },
   getPhotos: async (parent, args, context) => {
     try {
       checkAuth(context);

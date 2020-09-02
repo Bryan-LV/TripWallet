@@ -11,7 +11,6 @@ function AuthContextProvider(props) {
 
   const authOperations = {
     login: (userData) => {
-      console.log('login');
       // set token
       setToken(userData);
       localStorage.setItem('baseCurrency', userData.baseCurrency);
@@ -19,11 +18,9 @@ function AuthContextProvider(props) {
       dispatch({ type: LOGIN_USER, payload: { _id: userData._id, username: userData.username, baseCurrency: userData.baseCurrency } })
     },
     logout: () => {
-      console.log('log out');
       dispatch({ type: LOGOUT });
     },
     persistUser: async () => {
-      console.log('persist user');
       dispatch({ type: PERSIST_USER });
     }
   }

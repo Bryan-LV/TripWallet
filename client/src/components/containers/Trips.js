@@ -43,12 +43,12 @@ function Trips({ setTrip }) {
   }
 
   return (
-    <div className="mx-2 cursor-pointer lg:flex lg:flex-row lg:justify-start">
+    <div className="mx-2 cursor-pointer md:grid md:grid-cols-2 lg:grid-cols-3">
       {data && data.getTrips.map(trip => {
         return (
           <div className="rounded-lg bg-white max-w-sm m-auto mb-4 mt-3 shadow-lg lg:mx-4" key={trip._id} onClick={() => selectTrip(trip)}>
             <div>
-              <img className="rounded-t-lg" src={trip.photo ? trip.photo : langkawi} />
+              <img className="rounded-t-lg object-cover w-full h-64" src={trip.photo ? trip.photo : langkawi} />
             </div>
             <div className="p-6 rounded-b-lg">
               <h4 className="text-3xl font-semibold">{toTitleCase(trip.tripName)}</h4>

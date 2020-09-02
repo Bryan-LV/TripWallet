@@ -4,7 +4,6 @@ const currencyjs = require('currency.js');
 const checkAuth = require('../../utils/checkAuth');
 const Trip = require('../../models/trip.model');
 const Expense = require('../../models/expense.model');
-const { findById } = require('../../models/trip.model');
 
 const expenseQueries = {
   ///////////////////// Get Expense /////////////////////

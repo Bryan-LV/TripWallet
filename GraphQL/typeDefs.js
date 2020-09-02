@@ -72,8 +72,6 @@ module.exports = gql`
     users: [User]
     getTrip(id:ID!):Trip
     getTrips: [Trip]
-    ######### Delete getalltrips in production ###############
-    getAllTrips: [Trip]
     checkAuth: Response!
     getPhotos(query: String!): [Photo]
   }

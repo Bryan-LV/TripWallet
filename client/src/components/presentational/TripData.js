@@ -48,7 +48,7 @@ function TripData({ data, setTripEdit, setExpenseData, setExpenseItem }) {
       <div className="rounded-lg mb-2 py-4 max-w-md m-auto bg-gray-800 text-white flex flex-row justify-between">
         <div className="flex flex-row justify-start ml-10 font-semibold">
           <h4 className="pr-2 underline">Date</h4>
-          <h4 className="">Category</h4>
+          <h4 className="hidden">Category</h4>
         </div>
         <div className="mr-10 font-light">
           <p><span className="text-sm">{data.getTrip.baseCurrency}</span> / <span className="text-sm">{data.getTrip.foreignCurrency}</span></p>

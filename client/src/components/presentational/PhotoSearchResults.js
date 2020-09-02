@@ -11,7 +11,6 @@ function PhotoSearchResults({ searchProp, closeModal, setSelectedPhoto }) {
 
   const [searchPhotos] = useLazyQuery(SEARCH_PHOTOS, {
     onCompleted: data => {
-      console.log(data);
       if (data.getPhotos.length === 0) {
         setSearchError('Uh oh. Looks like we couldn\'t find what you were looking for. Try another search keyword.')
       }

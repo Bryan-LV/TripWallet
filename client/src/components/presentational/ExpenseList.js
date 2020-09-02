@@ -18,7 +18,6 @@ function ExpenseList({ expenses, setExpenseItem, expenseEditData }) {
 
   // create array of objects
   const transformDatesMap = noRepeatingDates.map(date => ({ date, expenses: [] }));
-  // console.log('transform dates map', transformDatesMap);
 
   // operation to apply
   const groupExpensesReducer = (datesArray, curItem) => {
