@@ -21,7 +21,7 @@
     "dotenv": "^8.2.0",
     "formik": "^2.1.4",
     "graphql": "^15.0.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "mongoose": "^5.9.15",
     "pexels": "^1.0.1"
   },
